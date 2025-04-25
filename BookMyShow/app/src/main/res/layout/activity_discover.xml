@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    tools:context=".DiscoverActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="0dp"
+            app:title="Découvrir"
+            app:titleTextColor="#333333" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="12dp">
+
+            <!-- Barre de recherche -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_search"
+                    android:contentDescription="Search icon" />
+
+                <EditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@null"
+                    android:hint="Rechercher des spectacles en tournée..."
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Filtres -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginTop="12dp">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/filterChipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="false"
+                    app:singleLine="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/allChip"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tous"
+                        android:checked="true" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/theatreChip"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Théâtre" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/concertChip"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Concert" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/comedyChip"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Comédie" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/danceChip"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Danse" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+            <!-- Filtres de localisation -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/locationChipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:singleLine="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/allLocationsChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Toutes les villes"
+                        android:checked="true" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/tunisChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tunis" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/parisChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Paris" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/montrealChip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Montréal" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/moreLocationsChip"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:chipIcon="@drawable/ic_more"
+                        android:text="Plus" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenu principal -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Section Spectacles en vedette -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Spectacles en tournée"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Liste des spectacles en tournée -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tourShowsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Section Prochainement -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prochainement en tournée"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Liste des spectacles à venir -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/upcomingShowsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".MyTicketsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="0dp"
+            app:title="Mes Billets"
+            app:titleTextColor="#333333" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="#FF5252"
+            app:tabSelectedTextColor="#FF5252"
+            app:tabTextColor="#666666">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="À venir" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Passés" />
+        </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!-- État vide pour aucun billet -->
+    <LinearLayout
+        android:id="@+id/emptyStateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_empty_tickets"
+            android:alpha="0.5"
+            android:contentDescription="No tickets" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Aucun billet trouvé"
+            android:textAlignment="center"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Vous n'avez pas encore réservé de billets. Explorez les spectacles disponibles et réservez votre place !"
+            android:textAlignment="center"
+            android:textColor="#666666"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/exploreShowsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Explorer les spectacles"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <!-- FAB pour filtrer les billets -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filterFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_filter"
+        app:tint="#FFFFFF"
+        android:contentDescription="Filter tickets" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

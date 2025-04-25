@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/cityFlagImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_location"
+        android:contentDescription="City flag" />
+
+    <TextView
+        android:id="@+id/cityNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Nom de la ville"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:layout_marginStart="16dp" />
+
+    <RadioButton
+        android:id="@+id/cityRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false" />
+</LinearLayout>

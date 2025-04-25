@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Image et titre du spectacle -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp">
+
+            <ImageView
+                android:id="@+id/showImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Show image" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_overlay" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/showTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Titre du spectacle"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/showCategoryTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Théâtre"
+                    android:textColor="#FFFFFF"
+                    android:alpha="0.8"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/category_badge"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Informations sur la tournée -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/showDescriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description du spectacle avec quelques détails sur le contenu et les artistes..."
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dates de la tournée"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Liste des dates de tournée -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tourDatesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <Button
+                android:id="@+id/viewAllDatesButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Voir toutes les dates"
+                android:textAllCaps="false"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/showDetailsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Détails du spectacle"
+                android:textAllCaps="false"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,100 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
+    android:background="@color/white">
+
+    <!-- Message de bienvenue -->
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenue de retour !"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:paddingBottom="10dp"/>
+
+    <!-- Slogan centré -->
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connectez-vous pour explorer les meilleurs spectacles 🎭"
+        android:textSize="14sp"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:paddingBottom="20dp"
+        android:textStyle="italic"/>
+
+    <!-- Champ Email -->
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        android:textSize="14sp"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:background="@drawable/input_background"/>
+
+    <!-- Champ Mot de Passe avec icône afficher/cacher -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/input_background"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/gray"
+            android:hint="Mot de passe"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:background="@android:color/transparent"/>
+
+        <ImageView
+            android:id="@+id/ivTogglePassword"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_eye"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <!-- Bouton Connexion -->
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Connexion"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"/>
+
+    <!-- Lien vers l'inscription minimisé -->
+    <TextView
+        android:id="@+id/tvSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pas encore inscrit ? Créez un compte"
+        android:textColor="@color/teal_700"
+        android:textSize="12sp"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:onClick="goToSignup"/>
+</LinearLayout>

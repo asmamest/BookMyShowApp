@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sélectionner une ville"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Barre de recherche -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_search"
+            android:contentDescription="Search icon" />
+
+        <EditText
+            android:id="@+id/locationSearchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@null"
+            android:hint="Rechercher une ville..."
+            android:inputType="text"
+            android:padding="8dp"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Liste des villes populaires -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Villes populaires"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/popularCitiesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:nestedScrollingEnabled="false" />
+
+    <!-- Liste des pays -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tous les pays"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/countriesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="300dp"
+        android:nestedScrollingEnabled="true" />
+
+    <!-- Boutons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/cancelButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Annuler"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/applyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Appliquer"
+            android:textAllCaps="false"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+</LinearLayout>

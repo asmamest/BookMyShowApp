@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PastTicketsFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Barre de recherche pour les billets passés -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_search"
+                    android:contentDescription="Search icon" />
+
+                <EditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@null"
+                    android:hint="Rechercher dans l'historique..."
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Liste des billets passés -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pastTicketsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- État vide pour ce fragment -->
+            <LinearLayout
+                android:id="@+id/emptyStateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_empty_past"
+                    android:alpha="0.5"
+                    android:contentDescription="No past tickets" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Aucun billet passé"
+                    android:textAlignment="center"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Votre historique de billets apparaîtra ici après vos événements."
+                    android:textAlignment="center"
+                    android:textColor="#666666"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

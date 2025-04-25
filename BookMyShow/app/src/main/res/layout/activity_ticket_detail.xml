@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".TicketDetailActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
+
+            <ImageView
+                android:id="@+id/eventImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/event_1"
+                app:layout_collapseMode="parallax"
+                android:contentDescription="Event image" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/image_overlay_gradient"
+                app:layout_collapseMode="parallax" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_back"
+                app:title=""
+                app:titleTextColor="#FFFFFF" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Carte du billet -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="-40dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- En-tête du billet -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/eventTitleTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Titre de l'événement"
+                            android:textColor="#333333"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/eventCategoryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/category_badge"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:text="Catégorie"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp" />
+
+                        <!-- Statut du billet -->
+                        <TextView
+                            android:id="@+id/ticketStatusTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Billet confirmé"
+                            android:textColor="#4CAF50"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Ligne de séparation avec motif perforé -->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:contentDescription="Ticket perforation"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ticket_perforation" />
+
+                    <!-- Détails du billet -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Date et heure -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_calendar"
+                                android:contentDescription="Date icon" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Date et heure"
+                                    android:textColor="#666666"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/dateTimeTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="15 AVR 2025 à 20:00"
+                                    android:textColor="#333333"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Lieu -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_location_small"
+                                android:contentDescription="Location icon" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Lieu"
+                                    android:textColor="#666666"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/venueTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Nom du lieu"
+                                    android:textColor="#333333"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/addressTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Adresse du lieu"
+                                    android:textColor="#666666"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Informations sur le siège -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:contentDescription="Seat icon" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Siège"
+                                    android:textColor="#666666"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/seatInfoTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Section A, Rangée 5, Siège 12"
+                                    android:textColor="#333333"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Numéro de commande -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:contentDescription="Order icon" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Numéro de commande"
+                                    android:textColor="#666666"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/orderNumberTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="BMS-12345678"
+                                    android:textColor="#333333"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Code QR du billet -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="24dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scannez ce code à l'entrée"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+
+                        <FrameLayout
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="16dp"
+                            android:background="@drawable/qr_code_background"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:id="@+id/qrCodeImageView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/qr_code"
+                                android:contentDescription="QR Code" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/ticketIdTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="ID: T-9876543210"
+                            android:textColor="#333333"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Actions pour le billet -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Actions"
+                        android:textColor="#333333"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/addToCalendarButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:text="Ajouter au calendrier"
+                            android:textAllCaps="false" />
+
+                        <Button
+                            android:id="@+id/directionsButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="Itinéraire"
+                            android:textAllCaps="false" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/shareButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:text="Partager"
+                            android:textAllCaps="false"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                        <Button
+                            android:id="@+id/downloadPdfButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="Télécharger PDF"
+                            android:textAllCaps="false"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/transferTicketButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Transférer ce billet"
+                        android:textAllCaps="false"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Informations supplémentaires -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Informations importantes"
+                        android:textColor="#333333"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/entryInfoTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="• Les portes ouvrent 1 heure avant le début du spectacle.\n• Une pièce d'identité peut être demandée à l'entrée.\n• Les photos et vidéos ne sont pas autorisées pendant le spectacle.\n• Les retardataires ne seront admis qu'à un moment approprié de la représentation."
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/contactInfoTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Pour toute question, contactez-nous au +216 71 123 456 ou à support@bookmyshow.com"
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

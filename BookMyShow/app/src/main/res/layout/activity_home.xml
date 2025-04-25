@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/logoImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/app_logo" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="#FF5252"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp">
+
+                    <ImageView
+                        android:id="@+id/notificationIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_notification" />
+
+                    <TextView
+                        android:id="@+id/notificationBadge"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="top|end"
+                        android:background="@drawable/notification_badge_background"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_search" />
+
+                <EditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@null"
+                    android:hint="Search for events, shows, movies..."
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/locationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_location"
+                    android:drawablePadding="4dp"
+                    android:text="Paris"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="#DDDDDD" />
+
+                <TextView
+                    android:id="@+id/radiusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:text="5 km"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/mapViewButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:text="Map View"
+                    android:textColor="#FF5252"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/filterChipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                app:singleLine="true">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/allChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/musicChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Music" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/theatreChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Theatre" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/danceChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dance" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/operaChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Opera" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/festivalChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Festivals" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Featured Events Banner -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/featuredEventsViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Indicator for Featured Events -->
+            <LinearLayout
+                android:id="@+id/featuredEventsIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Top Trending Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Top Trending"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/trendingRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal" />
+
+            <!-- Nearby Events Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Events Near You"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/nearbyEventsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Suggestions Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Suggestions For You"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/suggestionsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Ajout du loadingOverlay -->
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="#FF5252" />
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/dialogTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Toutes les dates de tournée"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Filtres de localisation -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/dialogLocationChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:singleLine="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/dialogAllLocationsChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toutes les villes"
+                android:checked="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/dialogTunisChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tunis" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/dialogParisChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paris" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/dialogMontrealChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Montréal" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Calendrier pour sélectionner les dates -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/monthTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable"
+        app:tabTextAppearance="@style/TabTextAppearance" />
+
+    <!-- Liste complète des dates -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dialogTourDatesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxHeight="400dp" />
+
+    <Button
+        android:id="@+id/closeDialogButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fermer"
+        android:textAllCaps="false"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

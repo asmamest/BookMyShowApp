@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSurface"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Modifier le profil"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Email"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvCurrentEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="user@example.com"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Nom d'utilisateur"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/input_background"
+        android:hint="Nom d'utilisateur"
+        android:inputType="text"
+        android:padding="12dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?attr/colorOnSurfaceVariant"
+        android:textSize="16sp" />
+
+    <!-- Téléphone -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Téléphone"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/input_background"
+        android:hint="Téléphone"
+        android:inputType="phone"
+        android:padding="12dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?attr/colorOnSurfaceVariant"
+        android:textSize="16sp" />
+
+    <!-- Date de naissance -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Date de naissance"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etBirthDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/input_background"
+        android:hint="Date de naissance"
+        android:inputType="date"
+        android:padding="12dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorHint="?attr/colorOnSurfaceVariant"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorSurfaceVariant"
+            android:text="Annuler"
+            android:textColor="?attr/colorOnSurface" />
+
+        <Button
+            android:id="@+id/btnSaveChanges"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/colorPrimary"
+            android:text="Enregistrer"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</LinearLayout>

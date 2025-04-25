@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rechercher une localisation"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Entrez un nom de ville"
+        android:inputType="text"
+        android:layout_marginBottom="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resultsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rayon de recherche"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <SeekBar
+            android:id="@+id/radiusSeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/radiusValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 km"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Réinitialiser"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Annuler" />
+    </LinearLayout>
+</LinearLayout>

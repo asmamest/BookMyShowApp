@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.preference.PreferenceCategory
+        app:title="General Notifications"
+        app:iconSpaceReserved="false">
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="pref_all_notifications"
+            app:title="Enable All Notifications"
+            app:summary="Turn on/off all notifications from BookMyShow"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        app:title="Notification Types"
+        app:iconSpaceReserved="false">
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="pref_promotions"
+            app:title="Promotions and Offers"
+            app:summary="Get notified about special offers and discounts"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="pref_booking_reminders"
+            app:title="Booking Reminders"
+            app:summary="Receive reminders about your upcoming bookings"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="pref_price_alerts"
+            app:title="Price Alerts"
+            app:summary="Get notified when prices change for your watchlist"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="pref_new_releases"
+            app:title="New Releases"
+            app:summary="Be the first to know about new movies and events"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        app:title="Email Notifications"
+        app:iconSpaceReserved="false">
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="pref_email_notifications"
+            app:title="Email Notifications"
+            app:summary="Receive important updates via email"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="pref_email_newsletter"
+            app:title="Newsletter"
+            app:summary="Subscribe to our weekly newsletter"
+            app:defaultValue="false"
+            app:iconSpaceReserved="false" />
+
+    </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

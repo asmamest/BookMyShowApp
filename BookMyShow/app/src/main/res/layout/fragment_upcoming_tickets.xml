@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpcomingTicketsFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Section des billets à venir bientôt -->
+            <TextView
+                android:id="@+id/soonHeaderTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bientôt"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/soonTicketsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Section des autres billets à venir -->
+            <TextView
+                android:id="@+id/laterHeaderTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Plus tard"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/laterTicketsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- État vide pour ce fragment -->
+            <LinearLayout
+                android:id="@+id/emptyStateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_empty_upcoming"
+                    android:alpha="0.5"
+                    android:contentDescription="No upcoming tickets" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Aucun billet à venir"
+                    android:textAlignment="center"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Vous n'avez pas de billets pour des événements à venir."
+                    android:textAlignment="center"
+                    android:textColor="#666666"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

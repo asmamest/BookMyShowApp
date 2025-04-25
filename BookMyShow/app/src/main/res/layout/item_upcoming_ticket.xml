@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- En-tête du billet avec image et informations principales -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp">
+
+            <ImageView
+                android:id="@+id/eventImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Event image"
+                tools:src="@drawable/event_1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/image_overlay_gradient" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/eventTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Le Misanthrope" />
+
+                <TextView
+                    android:id="@+id/eventCategoryTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/category_badge"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    tools:text="Théâtre" />
+            </LinearLayout>
+
+            <!-- Compteur à rebours -->
+            <TextView
+                android:id="@+id/countdownTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="12dp"
+                android:background="@drawable/countdown_background"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="Dans 3 jours" />
+        </FrameLayout>
+
+        <!-- Détails du billet -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <!-- Date -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:id="@+id/dayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#333333"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="15" />
+
+                <TextView
+                    android:id="@+id/monthTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    tools:text="AVR" />
+            </LinearLayout>
+
+            <!-- Informations sur l'événement -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Heure -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_time_small"
+                        android:contentDescription="Time icon" />
+
+                    <TextView
+                        android:id="@+id/timeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        tools:text="20:00" />
+                </LinearLayout>
+
+                <!-- Lieu -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_location_small"
+                        android:contentDescription="Location icon" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/venueTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="#333333"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            tools:text="Théâtre National" />
+
+                        <TextView
+                            android:id="@+id/addressTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            tools:text="Avenue Habib Bourguiba, Tunis" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Siège -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:contentDescription="Seat icon" />
+
+                    <TextView
+                        android:id="@+id/seatInfoTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        tools:text="Orchestre, Rangée 5, Siège 12" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Ligne de séparation avec motif perforé -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:contentDescription="Ticket perforation"
+            android:scaleType="fitXY"
+            android:src="@drawable/ticket_perforation" />
+
+        <!-- Boutons d'action -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Première rangée de boutons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/viewTicketButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="Voir"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/addToCalendarButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:text="Calendrier"
+                    android:textAllCaps="false"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+            </LinearLayout>
+
+            <!-- Deuxième rangée de boutons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/directionsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="Itinéraire"
+                    android:textAllCaps="false"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                <Button
+                    android:id="@+id/shareButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:text="Partager"
+                    android:textAllCaps="false"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

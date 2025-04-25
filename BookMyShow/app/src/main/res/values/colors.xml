@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorSecondary">#757575</color>
+    <color name="colorInactive">#BDBDBD</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="background_light">#F5F7FA</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="divider">#EEEEEE</color>
+    <color name="colorAccent">#FF5252</color>
+    <color name="teal_700">#018786</color>
+    <color name="gray">#9E9E9E</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_900">#FF016968</color>
+    <color name="light_gray">#FFF5F5F5</color>
+    <color name="red">#FFE53935</color>
+    <color name="orange_300">#FFFF9E80</color>
+    <color name="orange_500">#FFFF6D00</color>
+    <color name="orange_700">#FFE65100</color>
+
+    <!-- Theme specific colors -->
+    <color name="light_background">#ffffff</color>
+    <color name="dark_background">#FF121212</color>
+    <color name="dark_surface">#FF1E1E1E</color>
+    <color name="dark_surface_variant">#FF2D2D2D</color>
+
+</resources>
