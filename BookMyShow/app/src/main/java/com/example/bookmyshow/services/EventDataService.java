@@ -47,12 +47,15 @@ public class EventDataService {
 
         String shortDescription = getShortDescriptionForCategory(category);
 
+        Log.d("convertToFeaturedEvent", "Converting event: Title=" + backendEvent.getTitle() + ", ID=" + backendEvent.getId());
+
         return new HomeActivity.FeaturedEvent(
+                backendEvent.getId(),
                 backendEvent.getTitle(),
-                shortDescription,
                 R.drawable.event_2
         );
     }
+
 
     private String getShortDescriptionForCategory(CategoryEvent category) {
         if (category == null) {
@@ -77,8 +80,6 @@ public class EventDataService {
         }
     }
 
-
-
     // Méthode pour charger les événements en vedette
     public void loadFeaturedEvents(final FeaturedEventsCallback callback) {
         apiService.getAllEvents().enqueue(new Callback<List<BackendEvent>>() {
@@ -87,18 +88,15 @@ public class EventDataService {
                 if (response.isSuccessful() && response.body() != null) {
                     List<BackendEvent> backendEvents = response.body();
                     List<HomeActivity.FeaturedEvent> featuredEvents = new ArrayList<>();
-
                     // Prendre les 3 premiers événements comme événements en vedette
                     for (int i = 0; i < Math.min(3, backendEvents.size()); i++) {
                         featuredEvents.add(convertToFeaturedEvent(backendEvents.get(i)));
                     }
-
                     callback.onFeaturedEventsLoaded(featuredEvents);
                 } else {
                     callback.onDataNotAvailable("Erreur lors du chargement des événements en vedette");
                 }
             }
-
             @Override
             public void onFailure(Call<List<BackendEvent>> call, Throwable t) {
                 Log.e(TAG, "Erreur API: " + t.getMessage());
@@ -247,7 +245,6 @@ public class EventDataService {
             }
         });
     }
-
     // Méthode pour charger les événements correspondant aux horaires
     private void loadEventsForSchedules(final List<BackendEventSchedule> schedules, final EventsCallback callback) {
         apiService.getAllEvents().enqueue(new Callback<List<BackendEvent>>() {
@@ -267,7 +264,15 @@ public class EventDataService {
                                 String venue = schedule.getLieuName() != null ?
                                         schedule.getLieuName() : "Lieu inconnu";
 
-                                nearbyEvents.add(convertToUiEvent(event, venue, date));
+                                // Créer l'événement avec l'ID
+                                HomeActivity.Event uiEvent = new HomeActivity.Event(
+                                        event.getId(),
+                                        event.getTitle(),
+                                        venue,
+                                        date,
+                                        R.drawable.event_1
+                                );
+                                nearbyEvents.add(uiEvent);
                                 break;
                             }
                         }
@@ -291,7 +296,6 @@ public class EventDataService {
             }
         });
     }
-
     // Méthode pour charger les suggestions d'événements
     public void loadSuggestions(final EventsCallback callback) {
         apiService.getAllEvents().enqueue(new Callback<List<BackendEvent>>() {
@@ -305,7 +309,11 @@ public class EventDataService {
                     int startIndex = Math.min(4, backendEvents.size());
                     for (int i = startIndex; i < Math.min(startIndex + 3, backendEvents.size()); i++) {
                         BackendEvent event = backendEvents.get(i);
-                        suggestions.add(convertToUiEvent(event, "Lieu à confirmer", "Prochainement"));
+                        // Créer l'événement avec l'ID
+                        suggestions.add(new HomeActivity.Event(
+                                event.getId(),
+                                event.getTitle()
+                        ));
                     }
 
                     callback.onEventsLoaded(suggestions);
@@ -321,7 +329,6 @@ public class EventDataService {
             }
         });
     }
-
     // Méthode pour filtrer les événements par catégorie
     public void filterEventsByCategory(String category, final EventsCallback callback) {
         // Convertir la chaîne de catégorie en enum CategoryEvent

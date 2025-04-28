@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@drawable/search_background"
-        android:drawableStart="@drawable/ic_search"
         android:drawablePadding="8dp"
         android:hint="Rechercher des événements"
         android:inputType="text"

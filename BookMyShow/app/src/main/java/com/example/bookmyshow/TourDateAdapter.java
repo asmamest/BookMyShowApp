@@ -48,7 +48,7 @@ public class TourDateAdapter extends RecyclerView.Adapter<TourDateAdapter.ViewHo
 
         // Configurer le bouton de réservation
         holder.bookButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PaymentActivity.class);
+            Intent intent = new Intent(context, EventDetailActivity.class);
             // Ajouter les informations nécessaires pour la réservation
             intent.putExtra("venue", date.getVenue());
             intent.putExtra("city", date.getCity());

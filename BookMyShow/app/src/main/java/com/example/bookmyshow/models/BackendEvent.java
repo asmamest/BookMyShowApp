@@ -9,6 +9,7 @@ public class BackendEvent {
     private String description;
     private String siteUrl;
     private String eventImg;
+    private
     private CategoryEvent category;
 
     public Long getId() {

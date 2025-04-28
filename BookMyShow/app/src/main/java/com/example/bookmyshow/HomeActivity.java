@@ -1,6 +1,5 @@
 // HomeActivity.java (modifications)
 package com.example.bookmyshow;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,14 +27,12 @@ import com.example.bookmyshow.utils.LocationManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
-
     private ViewPager2 featuredEventsViewPager;
     private LinearLayout featuredEventsIndicator;
     private RecyclerView trendingRecyclerView;
@@ -136,7 +132,6 @@ public class HomeActivity extends AppCompatActivity {
                 if (featuredEvents.isEmpty()) {
                     featuredEvents = getDemoFeaturedEvents();
                 }
-
                 for (FeaturedEvent event : featuredEvents) {
 
                     String shortDescription = getShortDescriptionForCategory(event.getCategory());
@@ -594,7 +589,22 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull FeaturedEventViewHolder holder, int position) {
-            holder.bind(featuredEvents.get(position));
+            FeaturedEvent event = featuredEvents.get(position);
+            holder.bind(event);
+
+            holder.itemView.setOnClickListener(v -> {
+                Log.d("FeaturedEventsAdapter", "Item clicked at position: " + position);
+
+                if (event != null) {
+                    Log.d("FeaturedEventsAdapter", "Clicked event title: " + event.getTitle());
+
+                    Intent intent = new Intent(holder.itemView.getContext(), EventDetailActivity.class);
+                    intent.putExtra("eventId", event.getId());
+                    holder.itemView.getContext().startActivity(intent);
+                } else {
+                    Log.e("FeaturedEventsAdapter", "Event is null at position: " + position);
+                }
+            });
         }
 
         @Override
@@ -612,24 +622,18 @@ public class HomeActivity extends AppCompatActivity {
                 imageView = itemView.findViewById(R.id.featuredImageView);
                 titleTextView = itemView.findViewById(R.id.featuredTitleTextView);
                 descriptionTextView = itemView.findViewById(R.id.featuredDescriptionTextView);
-
-                itemView.setOnClickListener(v -> {
-                    Intent intent = new Intent(itemView.getContext(), EventDetailActivity.class);
-                    // Passer l'ID de l'événement si disponible
-                    FeaturedEvent event = (FeaturedEvent) itemView.getTag();
-                    if (event != null && event.getId() != null) {
-                        intent.putExtra("eventId", event.getId());
-                    }
-                    itemView.getContext().startActivity(intent);
-                });
             }
 
             void bind(FeaturedEvent featuredEvent) {
-                itemView.setTag(featuredEvent);
+                if (featuredEvent != null) {
+                    imageView.setImageResource(featuredEvent.getImageResId());
+                    titleTextView.setText(featuredEvent.getTitle());
+                    descriptionTextView.setText(featuredEvent.getDescription());
 
-                imageView.setImageResource(featuredEvent.getImageResId());
-                titleTextView.setText(featuredEvent.getTitle());
-                descriptionTextView.setText(featuredEvent.getDescription());
+                    Log.d("FeaturedEventViewHolder", "Binding event: " + featuredEvent.getTitle());
+                } else {
+                    Log.e("FeaturedEventViewHolder", "FeaturedEvent is null during binding!");
+                }
             }
         }
     }
@@ -662,7 +666,6 @@ public class HomeActivity extends AppCompatActivity {
         public int getItemCount() {
             return events.size();
         }
-
         static class EventViewHolder extends RecyclerView.ViewHolder {
             private ImageView imageView;
             private TextView titleTextView;
@@ -675,13 +678,15 @@ public class HomeActivity extends AppCompatActivity {
                 titleTextView = itemView.findViewById(R.id.eventTitleTextView);
                 venueTextView = itemView.findViewById(R.id.eventVenueTextView);
                 dateTextView = itemView.findViewById(R.id.eventDateTextView);
-
                 itemView.setOnClickListener(v -> {
                     Intent intent = new Intent(itemView.getContext(), EventDetailActivity.class);
                     // Passer l'ID de l'événement si disponible
                     Event event = (Event) itemView.getTag();
                     if (event != null && event.getId() != null) {
                         intent.putExtra("eventId", event.getId());
+                        Log.d("EventAdapter", "Opening event with ID: " + event.getId());
+                    } else {
+                        Log.e("EventAdapter", "Event ID is null or event is null");
                     }
                     itemView.getContext().startActivity(intent);
                 });
@@ -697,23 +702,28 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
-
     // Model classes
     public static class FeaturedEvent {
-        private Long id;
+        private long id;
         private String title;
         private String description;
         private int imageResId;
         private String category;
         private String shortDescription;
         // Constructor with category and shortDescription
-        public FeaturedEvent(Long id, String title, String description, int imageResId, String category) {
+        public FeaturedEvent(long id, String title, String description, int imageResId, String category) {
             this.id = id;
             this.title = title;
             this.description = description;
             this.imageResId = imageResId;
             this.category = category;
         }
+        public FeaturedEvent(long id, String title, int imageResId) {
+            this.id = id;
+            this.title = title;
+            this.imageResId = imageResId;
+        }
+
 
         // Constructor without category and shortDescription (for backwards compatibility)
         public FeaturedEvent(String title, String description, int imageResId) {
@@ -721,6 +731,11 @@ public class HomeActivity extends AppCompatActivity {
             this.description = description;
             this.imageResId = imageResId;
         }
+        public FeaturedEvent(long id,String title, String shortdescription,int imageResId){
+            this.id=id;
+            this.title=title;
+            this.description=shortdescription;
+            this.imageResId=imageResId;}
 
         // Getters and Setters for new fields
 
@@ -787,6 +802,10 @@ public class HomeActivity extends AppCompatActivity {
             this.venue = venue;
             this.date = date;
             this.imageResId = imageResId;
+        }
+        public Event(Long id, String title){
+            this.id=id;
+            this.title=title;
         }
 
         public Long getId() {

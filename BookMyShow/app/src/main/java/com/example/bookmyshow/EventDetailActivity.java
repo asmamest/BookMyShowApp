@@ -1,6 +1,7 @@
 package com.example.bookmyshow;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,19 +12,16 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.bookmyshow.models.BackendEvent;
 import com.example.bookmyshow.models.BackendEventSchedule;
 import com.example.bookmyshow.services.EventDataService;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,17 +57,19 @@ public class EventDetailActivity extends AppCompatActivity {
 
         // Récupérer l'ID de l'événement depuis l'intent
         eventId = getIntent().getLongExtra("eventId", -1);
+        Log.d(TAG, "Received eventId: " + eventId);
+
         if (eventId != -1) {
             loadEventDetails();
         } else {
             // Si aucun ID n'est fourni, charger des données de démonstration
+            Log.w(TAG, "No eventId provided, loading demo data");
             setupSchedule();
             setupTicketOptions();
         }
 
         setupClickListeners();
     }
-
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -227,27 +227,49 @@ public class EventDetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        shareButton.setOnClickListener(v -> {
-            String eventTitle = currentEvent != null ? currentEvent.getTitle() : "Rock Concert: Summer Tour 2023";
+        bookTicketsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventDetailActivity.this, PaymentActivity.class);
 
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Check out this event!");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "I'm going to " + eventTitle + ". Join me!");
-            startActivity(Intent.createChooser(shareIntent, "Share via"));
+            if (eventId != -1) {
+                intent.putExtra("eventId", eventId);
+                intent.putExtra("eventTitle", eventTitleText); // le titre de l'event
+                intent.putExtra("ticketType", ticketOptionsRecyclerView); // ex: "VIP Ticket"
+                intent.putExtra("eventDateTime", eventDateTime); // ex: "April 15, 2023 | 8:00 PM"
+                intent.putExtra("eventVenue", eventVenue); // ex: "Grand Arena, Paris"
+                intent.putExtra("ticketPrice", ticketPrice); // ex: 199.99
+            }
+
+            startActivity(intent);
         });
 
         // Gestionnaire d'événements pour le clic sur le lieu
         eventLocationText.setOnClickListener(v -> {
             // Récupérer les informations du lieu depuis l'événement
             String locationName = eventLocationText.getText().toString();
-            String mapPosition = "48.8566,2.3522"; // Coordonnées par défaut (Paris)
 
-            // Ouvrir l'activité de carte
-            Intent intent = new Intent(EventDetailActivity.this, EventLocationActivity.class);
-            intent.putExtra("locationName", locationName);
-            intent.putExtra("mapPosition", mapPosition);
-            startActivity(intent);
+            // Coordonnées de l'événement (à remplacer par les coordonnées réelles de votre événement)
+            String latitude = "48.8566";
+            String longitude = "2.3522";
+
+            // Créer l'URI pour Google Maps
+            Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + Uri.encode(locationName));
+
+            // Créer l'intent pour ouvrir Google Maps
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            // Vérifier si Google Maps est installé
+            if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(mapIntent);
+            } else {
+                // Si Google Maps n'est pas installé, ouvrir dans le navigateur
+                Uri browserUri = Uri.parse("https://www.google.com/maps/search/?api=1&query="
+                        + Uri.encode(locationName));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, browserUri);
+                startActivity(browserIntent);
+
+                Toast.makeText(this, "Google Maps n'est pas installé", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
