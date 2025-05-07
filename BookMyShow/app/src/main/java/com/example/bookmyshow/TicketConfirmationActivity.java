@@ -71,10 +71,8 @@ public class TicketConfirmationActivity extends AppCompatActivity {
     private TextView bookingDateTimeTextView;
     private TextView showTitleTextView;
     private TextView showDateTextView;
-    private TextView showTimeTextView;
     private TextView showVenueTextView;
-    private TextView seatCategoryTextView;
-    private TextView seatCountTextView;
+
     private TextView totalPriceTextView;
     private TextView customerEmailTextView;
     private ImageView qrCodeImageView;
@@ -145,10 +143,7 @@ public class TicketConfirmationActivity extends AppCompatActivity {
         bookingDateTimeTextView = findViewById(R.id.txt_booking_datetime);
         showTitleTextView = findViewById(R.id.txt_show_title);
         showDateTextView = findViewById(R.id.txt_show_date);
-        showTimeTextView = findViewById(R.id.txt_show_time);
         showVenueTextView = findViewById(R.id.txt_show_venue);
-        seatCategoryTextView = findViewById(R.id.txt_seat_category);
-        seatCountTextView = findViewById(R.id.txt_seat_count);
         totalPriceTextView = findViewById(R.id.txt_total_price);
         customerEmailTextView = findViewById(R.id.txt_customer_email);
         qrCodeImageView = findViewById(R.id.img_qr_code);
@@ -238,10 +233,6 @@ public class TicketConfirmationActivity extends AppCompatActivity {
             }
         }
 
-        if (showTimeTextView != null) {
-            showTimeTextView.setText(time);
-        }
-
         // Afficher toutes les catégories de billets
         StringBuilder categoryText = new StringBuilder();
         StringBuilder countText = new StringBuilder();
@@ -277,13 +268,6 @@ public class TicketConfirmationActivity extends AppCompatActivity {
 
         countText.append(totalTickets).append(" place(s)");
 
-        if (seatCategoryTextView != null) {
-            seatCategoryTextView.setText(categoryText.toString());
-        }
-
-        if (seatCountTextView != null) {
-            seatCountTextView.setText(countText.toString());
-        }
     }
 
     private void addTicketCategoryView(LinearLayout container, String category, int quantity) {
@@ -419,10 +403,6 @@ public class TicketConfirmationActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(TicketConfirmationActivity.this,
                             "Email de confirmation renvoyé avec succès",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(TicketConfirmationActivity.this,
-                            "Erreur lors de l'envoi de l'email",
                             Toast.LENGTH_SHORT).show();
                 }
             }

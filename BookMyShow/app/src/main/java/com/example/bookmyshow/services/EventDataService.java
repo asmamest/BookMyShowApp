@@ -34,6 +34,7 @@ public class EventDataService {
     // Méthode pour convertir un BackendEvent en Event pour l'UI
     public HomeActivity.Event convertToUiEvent(BackendEvent backendEvent, String venue, String date) {
         return new HomeActivity.Event(
+                backendEvent.getId(),
                 backendEvent.getTitle(),
                 venue,
                 date,
@@ -52,10 +53,10 @@ public class EventDataService {
         return new HomeActivity.FeaturedEvent(
                 backendEvent.getId(),
                 backendEvent.getTitle(),
+                shortDescription,
                 R.drawable.event_2
         );
     }
-
 
     private String getShortDescriptionForCategory(CategoryEvent category) {
         if (category == null) {
@@ -88,15 +89,24 @@ public class EventDataService {
                 if (response.isSuccessful() && response.body() != null) {
                     List<BackendEvent> backendEvents = response.body();
                     List<HomeActivity.FeaturedEvent> featuredEvents = new ArrayList<>();
-                    // Prendre les 3 premiers événements comme événements en vedette
-                    for (int i = 0; i < Math.min(3, backendEvents.size()); i++) {
-                        featuredEvents.add(convertToFeaturedEvent(backendEvents.get(i)));
+
+                    // Filtrer les événements avec IDs de 7 à 9 pour les featured events
+                    for (BackendEvent event : backendEvents) {
+                        if (event.getId() != null && event.getId() >= 7 && event.getId() <= 9) {
+                            featuredEvents.add(convertToFeaturedEvent(event));
+                        }
                     }
-                    callback.onFeaturedEventsLoaded(featuredEvents);
+
+                    if (featuredEvents.isEmpty()) {
+                        callback.onDataNotAvailable("Aucun événement en vedette trouvé");
+                    } else {
+                        callback.onFeaturedEventsLoaded(featuredEvents);
+                    }
                 } else {
                     callback.onDataNotAvailable("Erreur lors du chargement des événements en vedette");
                 }
             }
+
             @Override
             public void onFailure(Call<List<BackendEvent>> call, Throwable t) {
                 Log.e(TAG, "Erreur API: " + t.getMessage());
@@ -112,9 +122,20 @@ public class EventDataService {
             public void onResponse(Call<List<BackendEvent>> call, Response<List<BackendEvent>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<BackendEvent> backendEvents = response.body();
-                    List<HomeActivity.Event> trendingEvents = new ArrayList<>();
+                    List<BackendEvent> filteredEvents = new ArrayList<>();
 
-                    loadLieuxForEvents(backendEvents, trendingEvents, callback);
+                    // Filtrer les événements avec IDs de 10 à 13 pour les trending events
+                    for (BackendEvent event : backendEvents) {
+                        if (event.getId() != null && event.getId() >= 10 && event.getId() <= 13) {
+                            filteredEvents.add(event);
+                        }
+                    }
+
+                    if (filteredEvents.isEmpty()) {
+                        callback.onDataNotAvailable("Aucun événement tendance trouvé");
+                    } else {
+                        loadSchedulesForFilteredEvents(filteredEvents, new ArrayList<>(), callback);
+                    }
                 } else {
                     callback.onDataNotAvailable("Erreur lors du chargement des événements tendance");
                 }
@@ -223,28 +244,41 @@ public class EventDataService {
             }
         });
     }
+
     // Méthode pour charger les événements à proximité
     public void loadNearbyEvents(final EventsCallback callback) {
-        apiService.getUpcomingEventSchedules().enqueue(new Callback<List<BackendEventSchedule>>() {
+        apiService.getAllEvents().enqueue(new Callback<List<BackendEvent>>() {
             @Override
-            public void onResponse(Call<List<BackendEventSchedule>> call, Response<List<BackendEventSchedule>> response) {
+            public void onResponse(Call<List<BackendEvent>> call, Response<List<BackendEvent>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<BackendEventSchedule> schedules = response.body();
+                    List<BackendEvent> backendEvents = response.body();
+                    List<BackendEvent> filteredEvents = new ArrayList<>();
 
-                    // Charger les événements correspondant aux horaires
-                    loadEventsForSchedules(schedules, callback);
+                    // Filtrer les événements avec IDs de 14 à 16 pour les nearby events
+                    for (BackendEvent event : backendEvents) {
+                        if (event.getId() != null && event.getId() >= 14 && event.getId() <= 16) {
+                            filteredEvents.add(event);
+                        }
+                    }
+
+                    if (filteredEvents.isEmpty()) {
+                        callback.onDataNotAvailable("Aucun événement à proximité trouvé");
+                    } else {
+                        loadSchedulesForFilteredEvents(filteredEvents, new ArrayList<>(), callback);
+                    }
                 } else {
                     callback.onDataNotAvailable("Erreur lors du chargement des événements à proximité");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<BackendEventSchedule>> call, Throwable t) {
+            public void onFailure(Call<List<BackendEvent>> call, Throwable t) {
                 Log.e(TAG, "Erreur API: " + t.getMessage());
                 callback.onDataNotAvailable("Erreur de connexion");
             }
         });
     }
+
     // Méthode pour charger les événements correspondant aux horaires
     private void loadEventsForSchedules(final List<BackendEventSchedule> schedules, final EventsCallback callback) {
         apiService.getAllEvents().enqueue(new Callback<List<BackendEvent>>() {
@@ -296,6 +330,7 @@ public class EventDataService {
             }
         });
     }
+
     // Méthode pour charger les suggestions d'événements
     public void loadSuggestions(final EventsCallback callback) {
         apiService.getAllEvents().enqueue(new Callback<List<BackendEvent>>() {
@@ -329,6 +364,7 @@ public class EventDataService {
             }
         });
     }
+
     // Méthode pour filtrer les événements par catégorie
     public void filterEventsByCategory(String category, final EventsCallback callback) {
         // Convertir la chaîne de catégorie en enum CategoryEvent
@@ -361,13 +397,14 @@ public class EventDataService {
             }
         });
     }
+
     private void loadLieuxForFilteredEvents(List<BackendEvent> backendEvents, List<HomeActivity.Event> events, EventsCallback callback) {
         apiService.getAllLieux().enqueue(new Callback<List<BackendLieu>>() {
             @Override
             public void onResponse(Call<List<BackendLieu>> call, Response<List<BackendLieu>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<BackendLieu> lieux = response.body();
-                    loadSchedulesForFilteredEvents(backendEvents, lieux, events, callback);
+                    loadSchedulesForFilteredEvents(backendEvents, events, callback);
                 } else {
                     // Si on ne peut pas charger les lieux, utiliser des valeurs par défaut
                     for (BackendEvent event : backendEvents) {
@@ -400,27 +437,25 @@ public class EventDataService {
             }
         });
     }
-    private void loadSchedulesForFilteredEvents(List<BackendEvent> backendEvents, List<BackendLieu> lieux, List<HomeActivity.Event> events, EventsCallback callback) {
+
+    private void loadSchedulesForFilteredEvents(List<BackendEvent> backendEvents, List<HomeActivity.Event> events, EventsCallback callback) {
         apiService.getAllEventSchedules().enqueue(new Callback<List<BackendEventSchedule>>() {
             @Override
             public void onResponse(Call<List<BackendEventSchedule>> call, Response<List<BackendEventSchedule>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<BackendEventSchedule> schedules = response.body();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
 
                     for (BackendEvent event : backendEvents) {
                         String venue = "Lieu à confirmer";
                         String date = "Prochainement";
 
-                        // Trouver l'horaire correspondant à cet événement
+                        // Trouver le premier horaire correspondant à cet événement
                         for (BackendEventSchedule schedule : schedules) {
                             if (schedule.getEventId() != null && schedule.getEventId().equals(event.getId())) {
-                                // Trouver le lieu correspondant à cet horaire
-                                for (BackendLieu lieu : lieux) {
-                                    if (lieu.getId() != null && lieu.getId().equals(schedule.getLieuId())) {
-                                        venue = lieu.getName();
-                                        break;
-                                    }
+                                // Utiliser directement le nom du lieu depuis l'horaire
+                                if (schedule.getLieuName() != null) {
+                                    venue = schedule.getLieuName();
                                 }
 
                                 // Formater la date
@@ -428,6 +463,7 @@ public class EventDataService {
                                     date = schedule.getDateTime().format(formatter);
                                 }
 
+                                // Ne prendre que le premier horaire et sortir de la boucle
                                 break;
                             }
                         }
@@ -474,47 +510,65 @@ public class EventDataService {
             }
         });
     }
+
     // Méthode pour charger les détails d'un événement
     public void loadEventDetails(Long eventId, final EventDetailCallback callback) {
-        apiService.getEventById(eventId).enqueue(new Callback<BackendEvent>() { // Correction ici: un seul '>' à la fin
+        if (eventId == null || eventId <= 0) {
+            callback.onDataNotAvailable("ID d'événement invalide");
+            return;
+        }
+
+        Log.d(TAG, "Chargement des détails pour l'événement ID: " + eventId);
+
+        apiService.getEventById(eventId).enqueue(new Callback<BackendEvent>() {
             @Override
             public void onResponse(Call<BackendEvent> call, Response<BackendEvent> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     BackendEvent event = response.body();
+                    Log.d(TAG, "Événement chargé avec succès: " + event.getTitle());
                     callback.onEventLoaded(event);
                 } else {
-                    callback.onDataNotAvailable("Erreur lors du chargement des détails de l'événement");
+                    Log.e(TAG, "Erreur API: " + response.code() + " - " + response.message());
+                    callback.onDataNotAvailable("Erreur lors du chargement des détails de l'événement (Code: " + response.code() + ")");
                 }
             }
 
             @Override
             public void onFailure(Call<BackendEvent> call, Throwable t) {
                 Log.e(TAG, "Erreur API: " + t.getMessage());
-                callback.onDataNotAvailable("Erreur de connexion");
+                callback.onDataNotAvailable("Erreur de connexion: " + t.getMessage());
             }
         });
     }
     // Méthode pour charger les horaires d'un événement
     public void loadEventSchedules(Long eventId, final EventSchedulesCallback callback) {
+        if (eventId == null || eventId <= 0) {
+            callback.onDataNotAvailable("ID d'événement invalide");
+            return;
+        }
+
+        Log.d(TAG, "Chargement des horaires pour l'événement ID: " + eventId);
+
         apiService.getEventSchedulesByEventId(eventId).enqueue(new Callback<List<BackendEventSchedule>>() {
             @Override
             public void onResponse(Call<List<BackendEventSchedule>> call, Response<List<BackendEventSchedule>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<BackendEventSchedule> schedules = response.body();
+                    Log.d(TAG, "Nombre d'horaires chargés: " + schedules.size());
                     callback.onSchedulesLoaded(schedules);
                 } else {
-                    callback.onDataNotAvailable("Erreur lors du chargement des horaires");
+                    Log.e(TAG, "Erreur API: " + response.code() + " - " + response.message());
+                    callback.onDataNotAvailable("Erreur lors du chargement des horaires (Code: " + response.code() + ")");
                 }
             }
 
             @Override
             public void onFailure(Call<List<BackendEventSchedule>> call, Throwable t) {
                 Log.e(TAG, "Erreur API: " + t.getMessage());
-                callback.onDataNotAvailable("Erreur de connexion");
+                callback.onDataNotAvailable("Erreur de connexion: " + t.getMessage());
             }
         });
     }
-
     // Interfaces de callback
     public interface FeaturedEventsCallback {
         void onFeaturedEventsLoaded(List<HomeActivity.FeaturedEvent> featuredEvents);
@@ -535,5 +589,4 @@ public class EventDataService {
         void onSchedulesLoaded(List<BackendEventSchedule> schedules);
         void onDataNotAvailable(String errorMessage);
     }
-
 }

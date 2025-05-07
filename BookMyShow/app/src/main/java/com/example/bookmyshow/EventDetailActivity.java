@@ -4,34 +4,24 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
 import com.example.bookmyshow.models.BackendEvent;
 import com.example.bookmyshow.models.BackendEventSchedule;
 import com.example.bookmyshow.services.EventDataService;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.chip.Chip;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EventDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "EventDetailActivity";
 
-    private RecyclerView ticketOptionsRecyclerView;
     private Button bookTicketsButton;
     private Button shareButton;
     private TextView eventTitleText;
@@ -41,23 +31,20 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView eventDateText;
     private TextView availabilityStatusText;
     private TextView ticketsAvailableText;
-    private ImageView venueMapImageView; // Nouvelle ImageView pour la carte du théâtre
-    private View venueMapContainer; // Conteneur pour la carte du théâtre
+    private ImageView venueMapImageView;
+    private View venueMapContainer;
 
     private EventDataService eventDataService;
     private Long eventId;
-    private int dateIndex = -1;
     private BackendEvent currentEvent;
+    private BackendEventSchedule currentSchedule;
     private boolean isSoldOut = false;
-    private String eventLocation; // Pour stocker le lieu de l'événement
+    private String eventLocation;
 
     // Prix des billets par catégorie
     private static final double VIP_PRICE = 199.99;
     private static final double PREMIUM_PRICE = 99.99;
     private static final double STANDARD_PRICE = 49.99;
-
-    // Liste des options de billets
-    private List<TicketOption> ticketOptions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,48 +56,16 @@ public class EventDetailActivity extends AppCompatActivity {
         setupToolbar();
         initViews();
 
+        // Récupérer l'ID de l'événement
         eventId = getIntent().getLongExtra("eventId", -1);
-        dateIndex = getIntent().getIntExtra("dateIndex", -1);
-        isSoldOut = getIntent().getBooleanExtra("isSoldOut", false);
-
-        Log.d(TAG, "Received eventId: " + eventId + ", dateIndex: " + dateIndex + ", isSoldOut: " + isSoldOut);
-
-        String eventTitle = getIntent().getStringExtra("eventTitle");
-        String eventDescription = getIntent().getStringExtra("eventDescription");
-        String eventCategory = getIntent().getStringExtra("eventCategory");
-        int eventImageResId = getIntent().getIntExtra("eventImageResId", 0);
-
-        String eventDate = getIntent().getStringExtra("eventDate");
-        eventLocation = getIntent().getStringExtra("eventLocation");
-
-        if (eventTitle != null && eventDescription != null) {
-            eventTitleText.setText(eventTitle);
-            eventDescriptionText.setText(eventDescription);
-
-            if (eventImageResId != 0) {
-                eventHeaderImage.setImageResource(eventImageResId);
-            } else {
-                eventHeaderImage.setImageResource(R.drawable.event_detail_header);
-            }
-
-            CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingToolbar);
-            collapsingToolbarLayout.setTitle(eventTitle);
-        }
-
-        if (eventDate != null) {
-            eventDateText.setText(eventDate);
-        }
-
-        if (eventLocation != null) {
-            eventLocationText.setText(eventLocation);
-            // Vérifier si le lieu est le Théâtre Municipal de Tunis
-            checkAndDisplayVenueMap(eventLocation);
-        }
-
-        updateAvailabilityStatus(isSoldOut);
+        Log.d(TAG, "Received eventId: " + eventId);
 
         if (eventId != -1) {
-            loadEventDetails();
+            // Charger les détails de l'événement et son horaire
+            loadEventWithSchedule();
+        } else {
+            Log.e(TAG, "Aucun ID d'événement reçu!");
+            Toast.makeText(this, "Erreur: Impossible de charger les détails de l'événement", Toast.LENGTH_SHORT).show();
         }
 
         setupClickListeners();
@@ -123,11 +78,10 @@ public class EventDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingToolbar);
-        collapsingToolbarLayout.setTitle("Event Details");
+        collapsingToolbarLayout.setTitle("Détails de l'événement");
     }
 
     private void initViews() {
-        //ticketOptionsRecyclerView = findViewById(R.id.ticketOptionsRecyclerView);
         bookTicketsButton = findViewById(R.id.bookTicketsButton);
         shareButton = findViewById(R.id.shareButton);
         eventTitleText = findViewById(R.id.eventTitleText);
@@ -141,6 +95,118 @@ public class EventDetailActivity extends AppCompatActivity {
         // Initialiser les vues pour la carte du théâtre
         venueMapImageView = findViewById(R.id.venueMapImageView);
         venueMapContainer = findViewById(R.id.venueMapContainer);
+    }
+
+    private void loadEventWithSchedule() {
+        // Afficher un indicateur de chargement si nécessaire
+        // showLoading();
+
+        // Étape 1: Charger les détails de l'événement
+        eventDataService.loadEventDetails(eventId, new EventDataService.EventDetailCallback() {
+            @Override
+            public void onEventLoaded(BackendEvent event) {
+                currentEvent = event;
+
+                // Mettre à jour l'interface avec les détails de l'événement
+                updateEventDetails(event);
+
+                // Étape 2: Charger l'horaire de l'événement
+                loadEventSchedule();
+            }
+
+            @Override
+            public void onDataNotAvailable(String errorMessage) {
+                // hideLoading();
+                Log.e(TAG, "Erreur: " + errorMessage);
+                Toast.makeText(EventDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateEventDetails(BackendEvent event) {
+        if (event.getTitle() != null) {
+            eventTitleText.setText(event.getTitle());
+            CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingToolbar);
+            collapsingToolbarLayout.setTitle(event.getTitle());
+        }
+
+        if (event.getDescription() != null) {
+            eventDescriptionText.setText(event.getDescription());
+        }
+
+        // Charger l'image en fonction du titre de l'événement
+        String imageName = event.getTitle().toLowerCase().replace(" ", "_");
+        int imageResourceId = getImageResourceId(imageName);
+        if (imageResourceId != 0) {
+            eventHeaderImage.setImageResource(imageResourceId);
+        } else {
+            eventHeaderImage.setImageResource(R.drawable.event_detail_header);
+        }
+    }
+
+    private int getImageResourceId(String imageName) {
+        imageName = imageName.replace("&", "_and_");
+
+        if (imageName.matches("^[0-9].*")) {
+            imageName = "i" + imageName;
+        }
+
+        imageName = imageName.toLowerCase().replace(" ", "_");
+
+        String packageName = getApplicationContext().getPackageName();
+        int resId = getResources().getIdentifier(imageName, "drawable", packageName);
+
+        if (resId == 0) {
+            resId = R.drawable.event_1;
+        }
+        return resId;
+    }
+
+    private void loadEventSchedule() {
+        eventDataService.loadEventSchedules(eventId, new EventDataService.EventSchedulesCallback() {
+            @Override
+            public void onSchedulesLoaded(List<BackendEventSchedule> schedules) {
+                // hideLoading();
+
+                if (schedules.isEmpty()) {
+                    Log.e(TAG, "Aucun horaire trouvé pour l'événement");
+                    Toast.makeText(EventDetailActivity.this, "Aucun horaire disponible", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Prendre le premier horaire (puisque chaque événement n'a qu'un seul horaire)
+                currentSchedule = schedules.get(0);
+                updateScheduleDetails(currentSchedule);
+            }
+
+            @Override
+            public void onDataNotAvailable(String errorMessage) {
+                // hideLoading();
+                Log.e(TAG, "Erreur: " + errorMessage);
+                Toast.makeText(EventDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateScheduleDetails(BackendEventSchedule schedule) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
+
+        if (schedule.getDateTime() != null) {
+            String formattedDate = schedule.getDateTime().format(dateFormatter);
+            String time = schedule.getDateTime().format(timeFormatter);
+            eventDateText.setText(formattedDate + " | " + time);
+        }
+
+        if (schedule.getLieuName() != null) {
+            eventLocation = schedule.getLieuName();
+            eventLocationText.setText(eventLocation);
+            checkAndDisplayVenueMap(eventLocation);
+        }
+
+        // Mettre à jour le statut de disponibilité
+        isSoldOut = schedule.isSoldOut();
+        updateAvailabilityStatus(isSoldOut);
     }
 
     private void checkAndDisplayVenueMap(String location) {
@@ -195,113 +261,6 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
-
-    private void loadEventDetails() {
-        eventDataService.loadEventDetails(eventId, new EventDataService.EventDetailCallback() {
-            @Override
-            public void onEventLoaded(BackendEvent event) {
-                currentEvent = event;
-
-                if (eventTitleText.getText().toString().isEmpty()) {
-                    eventTitleText.setText(event.getTitle());
-                    eventDescriptionText.setText(event.getDescription());
-
-                    String imageName = event.getTitle().toLowerCase().replace(" ", "_");
-                    int imageResourceId = getImageResourceId(imageName);
-
-                    if (imageResourceId != 0) {
-                        eventHeaderImage.setImageResource(imageResourceId);
-                    } else {
-                        eventHeaderImage.setImageResource(R.drawable.event_detail_header);
-                    }
-
-                    CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingToolbar);
-                    collapsingToolbarLayout.setTitle(event.getTitle());
-                }
-
-                loadEventScheduleDetails();
-            }
-
-            private int getImageResourceId(String imageName) {
-                imageName = imageName.replace("&", "_and_");
-
-                if (imageName.matches("^[0-9].*")) {
-                    imageName = "i" + imageName;
-                }
-
-                imageName = imageName.toLowerCase().replace(" ", "_");
-
-                String packageName = getApplicationContext().getPackageName();
-                int resId = getResources().getIdentifier(imageName, "drawable", packageName);
-
-                if (resId == 0) {
-                    resId = R.drawable.event_1;
-                }
-                return resId;
-            }
-
-            @Override
-            public void onDataNotAvailable(String errorMessage) {
-                Log.e(TAG, "Erreur: " + errorMessage);
-                Toast.makeText(EventDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void loadEventScheduleDetails() {
-        dateIndex = getIntent().getIntExtra("dateIndex", -1);
-
-        String eventDate = getIntent().getStringExtra("eventDate");
-        eventLocation = getIntent().getStringExtra("eventLocation");
-        boolean isSoldOut = getIntent().getBooleanExtra("isSoldOut", false);
-
-        if (eventDate != null && eventLocation != null) {
-            eventDateText.setText(eventDate);
-            eventLocationText.setText(eventLocation);
-
-            // Vérifier si le lieu est le Théâtre Municipal de Tunis
-            checkAndDisplayVenueMap(eventLocation);
-        }
-
-        updateAvailabilityStatus(isSoldOut);
-
-        eventDataService.loadEventSchedules(eventId, new EventDataService.EventSchedulesCallback() {
-            @Override
-            public void onSchedulesLoaded(List<BackendEventSchedule> schedules) {
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy");
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
-
-                if (dateIndex >= 0 && dateIndex < schedules.size()) {
-                    BackendEventSchedule specificSchedule = schedules.get(dateIndex);
-
-                    if (specificSchedule.getDateTime() != null) {
-                        if (eventDate == null) {
-                            String formattedDate = specificSchedule.getDateTime().format(dateFormatter);
-                            String time = specificSchedule.getDateTime().format(timeFormatter);
-                            eventDateText.setText(formattedDate + " | " + time);
-                        }
-
-                        if (eventLocation == null && eventLocationText != null && specificSchedule.getLieuName() != null) {
-                            eventLocation = specificSchedule.getLieuName();
-                            eventLocationText.setText(eventLocation);
-
-                            // Vérifier si le lieu est le Théâtre Municipal de Tunis
-                            checkAndDisplayVenueMap(eventLocation);
-                        }
-
-                        boolean isSoldOutFromApi = specificSchedule.isSoldOut();
-                        updateAvailabilityStatus(isSoldOutFromApi);
-                    }
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable(String errorMessage) {
-                Log.e(TAG, "Erreur: " + errorMessage);
-            }
-        });
-    }
-
     private void setupClickListeners() {
         bookTicketsButton.setOnClickListener(v -> {
             if (isSoldOut) {
@@ -314,9 +273,6 @@ public class EventDetailActivity extends AppCompatActivity {
             // Passer les informations de l'événement
             if (eventId != -1) {
                 intent.putExtra("eventId", eventId);
-                if (dateIndex != -1) {
-                    intent.putExtra("dateIndex", dateIndex);
-                }
             }
 
             // Passer les informations communes de l'événement
@@ -343,8 +299,9 @@ public class EventDetailActivity extends AppCompatActivity {
         eventLocationText.setOnClickListener(v -> {
             String locationName = eventLocationText.getText().toString();
 
-            String latitude = "48.8566";
-            String longitude = "2.3522";
+            // Coordonnées par défaut (à remplacer par les vraies coordonnées si disponibles)
+            String latitude = "36.8065";  // Coordonnées de Tunis
+            String longitude = "10.1815";
 
             Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + Uri.encode(locationName));
 
@@ -358,8 +315,6 @@ public class EventDetailActivity extends AppCompatActivity {
                         + Uri.encode(locationName));
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, browserUri);
                 startActivity(browserIntent);
-
-                Toast.makeText(this, "Google Maps n'est pas installé", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -368,88 +323,5 @@ public class EventDetailActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    static class TicketOptionsAdapter extends RecyclerView.Adapter<TicketOptionsAdapter.TicketOptionViewHolder> {
-
-        private List<TicketOption> ticketOptions;
-        private int selectedPosition = -1;
-
-        public TicketOptionsAdapter(List<TicketOption> ticketOptions) {
-            this.ticketOptions = ticketOptions;
-        }
-
-        @NonNull
-        @Override
-        public TicketOptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.item_ticket_option, parent, false
-            );
-            return new TicketOptionViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull TicketOptionViewHolder holder, int position) {
-            holder.bind(ticketOptions.get(position), position == selectedPosition);
-
-            holder.radioButton.setOnClickListener(v -> {
-                int previousSelected = selectedPosition;
-                selectedPosition = holder.getAdapterPosition();
-
-                notifyItemChanged(previousSelected);
-                notifyItemChanged(selectedPosition);
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return ticketOptions.size();
-        }
-
-        static class TicketOptionViewHolder extends RecyclerView.ViewHolder {
-            private TextView typeTextView;
-            private TextView descriptionTextView;
-            private TextView priceTextView;
-            private RadioButton radioButton;
-
-            public TicketOptionViewHolder(@NonNull View itemView) {
-                super(itemView);
-                typeTextView = itemView.findViewById(R.id.ticketTypeTextView);
-                descriptionTextView = itemView.findViewById(R.id.ticketDescriptionTextView);
-                priceTextView = itemView.findViewById(R.id.ticketPriceTextView);
-                radioButton = itemView.findViewById(R.id.ticketRadioButton);
-            }
-
-            void bind(TicketOption ticketOption, boolean isSelected) {
-                typeTextView.setText(ticketOption.getType());
-                descriptionTextView.setText(ticketOption.getDescription());
-                priceTextView.setText(String.format("$%.2f", ticketOption.getPrice()));
-                radioButton.setChecked(isSelected);
-            }
-        }
-    }
-
-    static class TicketOption {
-        private String type;
-        private String description;
-        private double price;
-
-        public TicketOption(String type, String description, double price) {
-            this.type = type;
-            this.description = description;
-            this.price = price;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public double getPrice() {
-            return price;
-        }
     }
 }

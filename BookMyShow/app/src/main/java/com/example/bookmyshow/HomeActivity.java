@@ -531,18 +531,16 @@ public class HomeActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(v -> {
                 Log.d("FeaturedEventsAdapter", "Item clicked at position: " + position);
 
-                if (event != null) {
-                    Log.d("FeaturedEventsAdapter", "Clicked event title: " + event.getTitle());
-
+                if (event != null && event.getId() != null) {
                     Intent intent = new Intent(holder.itemView.getContext(), EventDetailActivity.class);
                     intent.putExtra("eventId", event.getId());
+                    Log.d("FeaturedEventsAdapter", "Opening event with ID: " + event.getId());
                     holder.itemView.getContext().startActivity(intent);
                 } else {
                     Log.e("FeaturedEventsAdapter", "Event is null at position: " + position);
                 }
             });
         }
-
         @Override
         public int getItemCount() {
             return featuredEvents.size();
@@ -614,17 +612,17 @@ public class HomeActivity extends AppCompatActivity {
                 titleTextView = itemView.findViewById(R.id.eventTitleTextView);
                 venueTextView = itemView.findViewById(R.id.eventVenueTextView);
                 dateTextView = itemView.findViewById(R.id.eventDateTextView);
+
                 itemView.setOnClickListener(v -> {
-                    Intent intent = new Intent(itemView.getContext(), EventDetailActivity.class);
-                    // Passer l'ID de l'événement si disponible
                     Event event = (Event) itemView.getTag();
                     if (event != null && event.getId() != null) {
+                        Intent intent = new Intent(itemView.getContext(), EventDetailActivity.class);
                         intent.putExtra("eventId", event.getId());
                         Log.d("EventAdapter", "Opening event with ID: " + event.getId());
+                        itemView.getContext().startActivity(intent);
                     } else {
                         Log.e("EventAdapter", "Event ID is null or event is null");
                     }
-                    itemView.getContext().startActivity(intent);
                 });
             }
 
@@ -636,8 +634,7 @@ public class HomeActivity extends AppCompatActivity {
                 venueTextView.setText(event.getVenue());
                 dateTextView.setText(event.getDate());
             }
-        }
-    }
+        }    }
     // Model classes
     public static class FeaturedEvent {
         private long id;
