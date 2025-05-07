@@ -11,8 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!-- Toolbar -->
 
-        <!-- Header avec gradient et animation de succès -->
+
         <!-- Header avec gradient et icône de succès -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header_container"
@@ -54,7 +55,20 @@
                 android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@id/txt_success_message" />
 
+            <!-- Ajout de la date et heure de réservation -->
+            <TextView
+                android:id="@+id/txt_booking_datetime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Réservé le: 01/01/2023 12:00"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:textColor="@color/colorSecondary"
+                app:layout_constraintTop_toBottomOf="@id/txt_booking_reference" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <!-- Container pour les cartes -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -249,6 +263,26 @@
                             android:drawableStart="@drawable/ic_location"
                             android:drawablePadding="8dp" />
 
+                        <!-- Détails des catégories de billets -->
+                        <LinearLayout
+                            android:id="@+id/ticket_categories_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Détail des billets"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorSecondary"
+                                android:layout_marginBottom="4dp" />
+
+                            <!-- Les catégories seront ajoutées dynamiquement ici -->
+
+                        </LinearLayout>
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -313,7 +347,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:background="@drawable/qr_code">
+                        android:background="@drawable/qr_code_background">
 
                         <ImageView
                             android:id="@+id/img_qr_code"
@@ -335,7 +369,7 @@
                         android:id="@+id/addToCalendarButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add to Calendar"
+                        android:text="Ajouter au calendrier"
                         android:textSize="14sp"
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold"
@@ -373,32 +407,7 @@
                         android:textColor="@color/colorPrimary"
                         android:layout_marginBottom="16dp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/img_profile"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/ic_profile_acc"
-                            android:scaleType="centerCrop"
-                            app:shapeAppearanceOverlay="@style/circleImageView" />
-
-                        <TextView
-                            android:id="@+id/txt_customer_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:text="Asma Mestaysser"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorSecondary" />
-                    </LinearLayout>
-
+                    <!-- Suppression des champs nom et téléphone, on garde uniquement l'email -->
                     <TextView
                         android:id="@+id/txt_customer_email"
                         android:layout_width="match_parent"
@@ -406,17 +415,7 @@
                         android:layout_marginBottom="8dp"
                         android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="12dp"
-                        android:text="asma.mestaysser@gmail.com"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorSecondary" />
-
-                    <TextView
-                        android:id="@+id/txt_customer_phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="12dp"
-                        android:drawableStart="@drawable/ic_phone"
-                        android:text="216 94 016 899"
+                        android:text="client@example.com"
                         android:textSize="14sp"
                         android:textColor="@color/colorSecondary" />
                 </LinearLayout>
@@ -443,19 +442,29 @@
                     android:paddingVertical="12dp"
                     app:iconGravity="textStart"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_home"
+                    android:id="@+id/downloadPdfButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    android:text="Home"
+                    android:text="Télécharger PDF"
                     android:textAllCaps="false"
                     android:paddingVertical="12dp"
                     app:iconGravity="textStart"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Accueil"
+                    android:textAllCaps="false"
+                    android:paddingVertical="12dp"
+                    app:iconGravity="textStart"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

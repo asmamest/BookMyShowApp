@@ -1,4 +1,4 @@
-package tn.enicarthage.backendandroid.services;
+/*package tn.enicarthage.backendandroid.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -178,3 +178,4 @@ public class TicketService {
         );
     }
 }
+*/

@@ -37,11 +37,8 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout featuredEventsIndicator;
     private RecyclerView trendingRecyclerView;
     private RecyclerView nearbyEventsRecyclerView;
-    private RecyclerView suggestionsRecyclerView;
     private ChipGroup filterChipGroup;
     private TextView mapViewButton;
-    private TextView locationText;
-    private TextView radiusText;
     private FrameLayout loadingOverlay;
     private EventDataService eventDataService;
     private LocationManager locationManager;
@@ -63,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
         notificationManager = new NotificationManager(this);
         updateNotificationBadge();
         locationManager = new LocationManager(this);
-        updateLocationDisplay();
         loadData();
         setupFilterChips();
         setupBottomNavigation();
@@ -76,11 +72,9 @@ public class HomeActivity extends AppCompatActivity {
         featuredEventsIndicator = findViewById(R.id.featuredEventsIndicator);
         trendingRecyclerView = findViewById(R.id.trendingRecyclerView);
         nearbyEventsRecyclerView = findViewById(R.id.nearbyEventsRecyclerView);
-        suggestionsRecyclerView = findViewById(R.id.suggestionsRecyclerView);
         filterChipGroup = findViewById(R.id.filterChipGroup);
         mapViewButton = findViewById(R.id.mapViewButton);
-        locationText = findViewById(R.id.locationText);
-        radiusText = findViewById(R.id.radiusText);
+
         loadingOverlay = findViewById(R.id.loadingOverlay);
         notificationIcon = findViewById(R.id.notificationIcon);
         notificationBadge = findViewById(R.id.notificationBadge);
@@ -92,8 +86,6 @@ public class HomeActivity extends AppCompatActivity {
         nearbyEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         nearbyEventsRecyclerView.setAdapter(new EventAdapter(new ArrayList<>(), false));
 
-        suggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        suggestionsRecyclerView.setAdapter(new EventAdapter(new ArrayList<>(), false));
 
         // Initialiser le ViewPager avec un adaptateur vide
         featuredEventsViewPager.setAdapter(new FeaturedEventsAdapter(new ArrayList<>()));
@@ -107,10 +99,6 @@ public class HomeActivity extends AppCompatActivity {
         searchEditText.setFocusable(false);
         searchEditText.setClickable(true);
     }
-    private void updateLocationDisplay() {
-        locationText.setText(locationManager.getLocationName());
-        radiusText.setText(locationManager.getRadius() + " km");
-    }
     private void loadData() {
         // Charger les événements en vedette
         loadFeaturedEvents();
@@ -122,7 +110,6 @@ public class HomeActivity extends AppCompatActivity {
         loadNearbyEvents();
 
         // Charger les suggestions
-        loadSuggestions();
     }
 
     private void loadFeaturedEvents() {
@@ -309,49 +296,6 @@ public class HomeActivity extends AppCompatActivity {
         return demoEvents;
     }
 
-    private void loadSuggestions() {
-        eventDataService.loadSuggestions(new EventDataService.EventsCallback() {
-            @Override
-            public void onEventsLoaded(List<Event> events) {
-                if (events.isEmpty()) {
-                    // Si aucun événement n'est disponible, ajouter des événements de démonstration
-                    events = getDemoSuggestions();
-                }
-
-                // Dynamically assign images to events based on title
-                for (Event event : events) {
-                    String imageName = event.getTitle().toLowerCase().replace(" ", "_");
-                    int imageResourceId = getImageResourceId(imageName);
-                    event.setImageResId(imageResourceId);
-                }
-
-                EventAdapter adapter = new EventAdapter(events, false);
-                suggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                suggestionsRecyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onDataNotAvailable(String errorMessage) {
-                Log.e(TAG, "Erreur: " + errorMessage);
-                Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-
-                // Charger des données de démonstration en cas d'échec
-                List<Event> demoEvents = getDemoSuggestions();
-                EventAdapter adapter = new EventAdapter(demoEvents, false);
-                suggestionsRecyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                suggestionsRecyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    private List<Event> getDemoSuggestions() {
-        List<Event> demoEvents = new ArrayList<>();
-        demoEvents.add(new Event("Classical Concert", "Symphony Hall", "Next Week", R.drawable.event_1));
-        demoEvents.add(new Event("Stand-up Comedy", "Laugh Factory", "Apr 25", R.drawable.event_1));
-        demoEvents.add(new Event("Ballet Performance", "Opera House", "May 2", R.drawable.event_1));
-        return demoEvents;
-    }
-
     private void setupFeaturedEventsIndicators(int count) {
         featuredEventsIndicator.removeAllViews();
 
@@ -520,13 +464,6 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        locationText.setOnClickListener(v -> {
-            showLocationSearchDialog();
-        });
-
-        radiusText.setOnClickListener(v -> {
-            showLocationSearchDialog();
-        });
         notificationIcon.setOnClickListener(v -> {
             showNotificationsDialog();
         });
@@ -534,7 +471,6 @@ public class HomeActivity extends AppCompatActivity {
     private void showLocationSearchDialog() {
         LocationSearchDialog dialog = new LocationSearchDialog(this, locationManager,
                 (locationName, latitude, longitude, radius) -> {
-                    updateLocationDisplay();
 
                     loadData();
 

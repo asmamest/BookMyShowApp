@@ -7,8 +7,7 @@ import com.example.bookmyshow.models.BackendLieu;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-
+import java.util.Map;
 
 
 import retrofit2.Call;
@@ -98,4 +97,16 @@ public interface ApiService {
 
     @DELETE("api/lieux/{id}")
     Call<Void> deleteLieu(@Path("id") Long id);
-}
+
+
+    @POST("bookings")
+    Call<Map<String, Object>> createBooking(@Body Map<String, Object> bookingRequest);
+
+    @GET("bookings/{referenceNumber}")
+    Call<Map<String, Object>> getBookingByReference(@Path("referenceNumber") String referenceNumber);
+
+    @GET("bookings/user/{userId}")
+    Call<List<Map<String, Object>>> getUserBookings(@Path("userId") Long userId);
+
+    @GET("bookings/resend-confirmation/{referenceNumber}")
+    Call<String> resendConfirmationEmail(@Path("referenceNumber") String referenceNumber);}

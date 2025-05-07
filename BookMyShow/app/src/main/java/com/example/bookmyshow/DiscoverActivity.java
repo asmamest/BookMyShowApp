@@ -103,21 +103,48 @@ public class DiscoverActivity extends AppCompatActivity {
         // (Ceci est une simplification - dans un cas réel, vous pourriez utiliser un service de géocodage inverse)
         if (lieu != null && lieu.getMapPosition() != null) {
             GeoPoint position = lieu.getMapPosition();
+
             // Exemple très simplifié de détermination de la ville par coordonnées
+
+            // Tunis
             if (position.getLatitude() > 36 && position.getLatitude() < 37 &&
                     position.getLongitude() > 10 && position.getLongitude() < 11) {
                 return new String[]{"Tunis", "Tunisie"};
+
+                // Sfax
+            } else if (position.getLatitude() > 34.7 && position.getLatitude() < 34.9 &&
+                    position.getLongitude() > 10.7 && position.getLongitude() < 10.9) {
+                return new String[]{"Sfax", "Tunisie"};
+
+                // Sousse
+            } else if (position.getLatitude() > 35.8 && position.getLatitude() < 36.0 &&
+                    position.getLongitude() > 10.5 && position.getLongitude() < 10.7) {
+                return new String[]{"Sousse", "Tunisie"};
+
+                // Djerba
+            } else if (position.getLatitude() > 33.8 && position.getLatitude() < 34.0 &&
+                    position.getLongitude() > 9.5 && position.getLongitude() < 9.7) {
+                return new String[]{"Djerba", "Tunisie"};
+
+                // Tataouine
+            } else if (position.getLatitude() > 32.9 && position.getLatitude() < 33.1 &&
+                    position.getLongitude() > 10.5 && position.getLongitude() < 10.7) {
+                return new String[]{"Tataouine", "Tunisie"};
+
+                // Paris
             } else if (position.getLatitude() > 48 && position.getLatitude() < 49 &&
                     position.getLongitude() > 2 && position.getLongitude() < 3) {
                 return new String[]{"Paris", "France"};
+
+                // Montréal
             } else if (position.getLatitude() > 45 && position.getLatitude() < 46 &&
                     position.getLongitude() > -74 && position.getLongitude() < -73) {
                 return new String[]{"Montréal", "Canada"};
             }
         }
 
-        // Valeur par défaut si on ne peut pas déterminer la ville
-        return new String[]{"Ville inconnue", "Pays inconnu"};
+        // Retour par défaut si aucune ville n'est trouvée
+        return new String[]{"Inconnu", "Inconnu"};
     }
 
     private void setupRecyclerViews() {
@@ -534,7 +561,7 @@ public class DiscoverActivity extends AppCompatActivity {
         RecyclerView dialogTourDatesRecyclerView = view.findViewById(R.id.dialogTourDatesRecyclerView);
         dialogTourDatesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        TourDateAdapter adapter = new TourDateAdapter(this, show.getTourDates());
+        TourDateAdapter adapter = new TourDateAdapter(this, show.getTourDates(), show);
         dialogTourDatesRecyclerView.setAdapter(adapter);
 
         // Configurer les onglets des mois

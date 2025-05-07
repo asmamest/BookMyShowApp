@@ -22,16 +22,15 @@ import com.example.bookmyshow.models.BackendEvent;
 import com.example.bookmyshow.models.BackendEventSchedule;
 import com.example.bookmyshow.services.EventDataService;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.chip.Chip;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class EventDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "EventDetailActivity";
 
-    private RecyclerView scheduleRecyclerView;
     private RecyclerView ticketOptionsRecyclerView;
     private Button bookTicketsButton;
     private Button shareButton;
@@ -39,37 +38,84 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView eventDescriptionText;
     private ImageView eventHeaderImage;
     private TextView eventLocationText;
+    private TextView eventDateText;
+    private TextView availabilityStatusText;
+    private TextView ticketsAvailableText;
+    private ImageView venueMapImageView; // Nouvelle ImageView pour la carte du théâtre
+    private View venueMapContainer; // Conteneur pour la carte du théâtre
 
     private EventDataService eventDataService;
     private Long eventId;
+    private int dateIndex = -1;
     private BackendEvent currentEvent;
+    private boolean isSoldOut = false;
+    private String eventLocation; // Pour stocker le lieu de l'événement
+
+    // Prix des billets par catégorie
+    private static final double VIP_PRICE = 199.99;
+    private static final double PREMIUM_PRICE = 99.99;
+    private static final double STANDARD_PRICE = 49.99;
+
+    // Liste des options de billets
+    private List<TicketOption> ticketOptions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
 
-        // Initialiser le service de données
         eventDataService = new EventDataService(this);
 
         setupToolbar();
         initViews();
 
-        // Récupérer l'ID de l'événement depuis l'intent
         eventId = getIntent().getLongExtra("eventId", -1);
-        Log.d(TAG, "Received eventId: " + eventId);
+        dateIndex = getIntent().getIntExtra("dateIndex", -1);
+        isSoldOut = getIntent().getBooleanExtra("isSoldOut", false);
+
+        Log.d(TAG, "Received eventId: " + eventId + ", dateIndex: " + dateIndex + ", isSoldOut: " + isSoldOut);
+
+        String eventTitle = getIntent().getStringExtra("eventTitle");
+        String eventDescription = getIntent().getStringExtra("eventDescription");
+        String eventCategory = getIntent().getStringExtra("eventCategory");
+        int eventImageResId = getIntent().getIntExtra("eventImageResId", 0);
+
+        String eventDate = getIntent().getStringExtra("eventDate");
+        eventLocation = getIntent().getStringExtra("eventLocation");
+
+        if (eventTitle != null && eventDescription != null) {
+            eventTitleText.setText(eventTitle);
+            eventDescriptionText.setText(eventDescription);
+
+            if (eventImageResId != 0) {
+                eventHeaderImage.setImageResource(eventImageResId);
+            } else {
+                eventHeaderImage.setImageResource(R.drawable.event_detail_header);
+            }
+
+            CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingToolbar);
+            collapsingToolbarLayout.setTitle(eventTitle);
+        }
+
+        if (eventDate != null) {
+            eventDateText.setText(eventDate);
+        }
+
+        if (eventLocation != null) {
+            eventLocationText.setText(eventLocation);
+            // Vérifier si le lieu est le Théâtre Municipal de Tunis
+            checkAndDisplayVenueMap(eventLocation);
+        }
+
+        updateAvailabilityStatus(isSoldOut);
 
         if (eventId != -1) {
             loadEventDetails();
-        } else {
-            // Si aucun ID n'est fourni, charger des données de démonstration
-            Log.w(TAG, "No eventId provided, loading demo data");
-            setupSchedule();
-            setupTicketOptions();
         }
 
         setupClickListeners();
     }
+
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,15 +127,74 @@ public class EventDetailActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        scheduleRecyclerView = findViewById(R.id.scheduleRecyclerView);
-        ticketOptionsRecyclerView = findViewById(R.id.ticketOptionsRecyclerView);
+        //ticketOptionsRecyclerView = findViewById(R.id.ticketOptionsRecyclerView);
         bookTicketsButton = findViewById(R.id.bookTicketsButton);
         shareButton = findViewById(R.id.shareButton);
         eventTitleText = findViewById(R.id.eventTitleText);
         eventDescriptionText = findViewById(R.id.eventDescriptionText);
         eventHeaderImage = findViewById(R.id.eventHeaderImage);
         eventLocationText = findViewById(R.id.eventLocationText);
+        eventDateText = findViewById(R.id.eventDateText);
+        availabilityStatusText = findViewById(R.id.availabilityStatusText);
+        ticketsAvailableText = findViewById(R.id.ticketsAvailableText);
+
+        // Initialiser les vues pour la carte du théâtre
+        venueMapImageView = findViewById(R.id.venueMapImageView);
+        venueMapContainer = findViewById(R.id.venueMapContainer);
     }
+
+    private void checkAndDisplayVenueMap(String location) {
+        // Vérifier si le lieu contient "Théâtre Municipal" et "Tunis"
+        if (location != null && location.contains("Théâtre municipal de Tunis") && location.contains("Tunis")) {
+            // Afficher la carte du théâtre
+            venueMapContainer.setVisibility(View.VISIBLE);
+            venueMapImageView.setImageResource(R.drawable.theatre_municipal_tunis_map);
+
+            // Vous pouvez également ajouter un texte explicatif
+            TextView venueMapTitle = findViewById(R.id.venueMapTitle);
+            if (venueMapTitle != null) {
+                venueMapTitle.setText("Plan du Théâtre Municipal de Tunis");
+            }
+        } else {
+            // Masquer la carte si ce n'est pas le Théâtre Municipal de Tunis
+            venueMapContainer.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateAvailabilityStatus(boolean isSoldOut) {
+        if (availabilityStatusText != null) {
+            if (isSoldOut) {
+                availabilityStatusText.setText("COMPLET");
+                availabilityStatusText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+
+                if (bookTicketsButton != null) {
+                    bookTicketsButton.setEnabled(false);
+                    bookTicketsButton.setText("Complet");
+                    bookTicketsButton.setAlpha(0.5f);
+                }
+
+                if (ticketsAvailableText != null) {
+                    ticketsAvailableText.setVisibility(View.GONE);
+                }
+            } else {
+                availabilityStatusText.setText("DISPONIBLE");
+                availabilityStatusText.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+
+                if (bookTicketsButton != null) {
+                    bookTicketsButton.setEnabled(true);
+                    bookTicketsButton.setText("Réserver");
+                    bookTicketsButton.setAlpha(1.0f);
+                }
+
+                if (ticketsAvailableText != null) {
+                    ticketsAvailableText.setVisibility(View.VISIBLE);
+                    int availableTickets = (int) (Math.random() * 100) + 1;
+                    ticketsAvailableText.setText(availableTickets + " billets disponibles");
+                }
+            }
+        }
+    }
+
 
     private void loadEventDetails() {
         eventDataService.loadEventDetails(eventId, new EventDataService.EventDetailCallback() {
@@ -97,31 +202,26 @@ public class EventDetailActivity extends AppCompatActivity {
             public void onEventLoaded(BackendEvent event) {
                 currentEvent = event;
 
-                // Mettre à jour l'interface utilisateur avec les détails de l'événement
-                eventTitleText.setText(event.getTitle());
-                eventDescriptionText.setText(event.getDescription());
+                if (eventTitleText.getText().toString().isEmpty()) {
+                    eventTitleText.setText(event.getTitle());
+                    eventDescriptionText.setText(event.getDescription());
 
-                // Charger l'image de l'événement si disponible
-                String imageName = event.getTitle().toLowerCase().replace(" ", "_");
-                int imageResourceId = getImageResourceId(imageName);
+                    String imageName = event.getTitle().toLowerCase().replace(" ", "_");
+                    int imageResourceId = getImageResourceId(imageName);
 
-                if (imageResourceId != 0) {
-                    eventHeaderImage.setImageResource(imageResourceId);
+                    if (imageResourceId != 0) {
+                        eventHeaderImage.setImageResource(imageResourceId);
+                    } else {
+                        eventHeaderImage.setImageResource(R.drawable.event_detail_header);
+                    }
+
+                    CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingToolbar);
+                    collapsingToolbarLayout.setTitle(event.getTitle());
                 }
-                else {
-                    eventHeaderImage.setImageResource(R.drawable.event_detail_header);
-                }
 
-                // Mettre à jour le titre de la toolbar
-                CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingToolbar);
-                collapsingToolbarLayout.setTitle(event.getTitle());
-
-                // Charger les horaires de l'événement
-                loadEventSchedules();
-
-                // Configurer les options de billets (statique pour l'instant)
-                setupTicketOptions();
+                loadEventScheduleDetails();
             }
+
             private int getImageResourceId(String imageName) {
                 imageName = imageName.replace("&", "_and_");
 
@@ -144,125 +244,116 @@ public class EventDetailActivity extends AppCompatActivity {
             public void onDataNotAvailable(String errorMessage) {
                 Log.e(TAG, "Erreur: " + errorMessage);
                 Toast.makeText(EventDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-
-                // Charger des données de démonstration en cas d'échec
-                setupSchedule();
-                setupTicketOptions();
             }
         });
     }
 
-    private void loadEventSchedules() {
+    private void loadEventScheduleDetails() {
+        dateIndex = getIntent().getIntExtra("dateIndex", -1);
+
+        String eventDate = getIntent().getStringExtra("eventDate");
+        eventLocation = getIntent().getStringExtra("eventLocation");
+        boolean isSoldOut = getIntent().getBooleanExtra("isSoldOut", false);
+
+        if (eventDate != null && eventLocation != null) {
+            eventDateText.setText(eventDate);
+            eventLocationText.setText(eventLocation);
+
+            // Vérifier si le lieu est le Théâtre Municipal de Tunis
+            checkAndDisplayVenueMap(eventLocation);
+        }
+
+        updateAvailabilityStatus(isSoldOut);
+
         eventDataService.loadEventSchedules(eventId, new EventDataService.EventSchedulesCallback() {
             @Override
             public void onSchedulesLoaded(List<BackendEventSchedule> schedules) {
-                List<ScheduleItem> scheduleItems = new ArrayList<>();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy");
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
 
-                for (BackendEventSchedule schedule : schedules) {
-                    if (schedule.getDateTime() != null) {
-                        String time = schedule.getDateTime().format(timeFormatter);
-                        String description = schedule.getEventTitle() != null ?
-                                schedule.getEventTitle() : currentEvent.getTitle();
-                        description += " à " + (schedule.getLieuName() != null ?
-                                schedule.getLieuName() : "Lieu à confirmer");
+                if (dateIndex >= 0 && dateIndex < schedules.size()) {
+                    BackendEventSchedule specificSchedule = schedules.get(dateIndex);
 
-                        scheduleItems.add(new ScheduleItem(time, description));
-
-                        // Mettre à jour le lieu de l'événement pour le clic sur la carte
-                        if (eventLocationText != null && schedule.getLieuName() != null) {
-                            eventLocationText.setText(schedule.getLieuName());
+                    if (specificSchedule.getDateTime() != null) {
+                        if (eventDate == null) {
+                            String formattedDate = specificSchedule.getDateTime().format(dateFormatter);
+                            String time = specificSchedule.getDateTime().format(timeFormatter);
+                            eventDateText.setText(formattedDate + " | " + time);
                         }
+
+                        if (eventLocation == null && eventLocationText != null && specificSchedule.getLieuName() != null) {
+                            eventLocation = specificSchedule.getLieuName();
+                            eventLocationText.setText(eventLocation);
+
+                            // Vérifier si le lieu est le Théâtre Municipal de Tunis
+                            checkAndDisplayVenueMap(eventLocation);
+                        }
+
+                        boolean isSoldOutFromApi = specificSchedule.isSoldOut();
+                        updateAvailabilityStatus(isSoldOutFromApi);
                     }
                 }
-
-                if (scheduleItems.isEmpty()) {
-                    // Si aucun horaire n'est disponible, ajouter un horaire de démonstration
-                    scheduleItems.add(new ScheduleItem("8:00 PM", "Opening Act: The Rockers"));
-                }
-
-                ScheduleAdapter adapter = new ScheduleAdapter(scheduleItems);
-                scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(EventDetailActivity.this));
-                scheduleRecyclerView.setAdapter(adapter);
             }
 
             @Override
             public void onDataNotAvailable(String errorMessage) {
                 Log.e(TAG, "Erreur: " + errorMessage);
-
-                // Charger des horaires de démonstration en cas d'échec
-                setupSchedule();
             }
         });
-    }
-
-    private void setupSchedule() {
-        List<ScheduleItem> scheduleItems = new ArrayList<>();
-        scheduleItems.add(new ScheduleItem("8:00 PM", "Opening Act: The Rockers"));
-
-        ScheduleAdapter adapter = new ScheduleAdapter(scheduleItems);
-        scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        scheduleRecyclerView.setAdapter(adapter);
-    }
-
-    private void setupTicketOptions() {
-        List<TicketOption> ticketOptions = new ArrayList<>();
-
-        // Add sample ticket options
-        ticketOptions.add(new TicketOption("VIP", "Front row seats + Backstage access", 199.99));
-        ticketOptions.add(new TicketOption("Premium", "Reserved seating in premium section", 99.99));
-        ticketOptions.add(new TicketOption("Standard", "General admission", 49.99));
-
-        TicketOptionsAdapter adapter = new TicketOptionsAdapter(ticketOptions);
-        ticketOptionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ticketOptionsRecyclerView.setAdapter(adapter);
     }
 
     private void setupClickListeners() {
         bookTicketsButton.setOnClickListener(v -> {
+            if (isSoldOut) {
+                Toast.makeText(this, "Désolé, cet événement est complet", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Intent intent = new Intent(EventDetailActivity.this, PaymentActivity.class);
+
+            // Passer les informations de l'événement
             if (eventId != -1) {
                 intent.putExtra("eventId", eventId);
+                if (dateIndex != -1) {
+                    intent.putExtra("dateIndex", dateIndex);
+                }
             }
+
+            // Passer les informations communes de l'événement
+            intent.putExtra("eventTitle", eventTitleText.getText().toString());
+            intent.putExtra("eventDate", eventDateText.getText().toString());
+            intent.putExtra("eventLocation", eventLocation);
+
+            // Passer les prix des billets
+            intent.putExtra("vipPrice", VIP_PRICE);
+            intent.putExtra("premiumPrice", PREMIUM_PRICE);
+            intent.putExtra("standardPrice", STANDARD_PRICE);
+
             startActivity(intent);
         });
 
-        bookTicketsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(EventDetailActivity.this, PaymentActivity.class);
-
-            if (eventId != -1) {
-                intent.putExtra("eventId", eventId);
-                intent.putExtra("eventTitle", eventTitleText); // le titre de l'event
-                intent.putExtra("ticketType", ticketOptionsRecyclerView); // ex: "VIP Ticket"
-                intent.putExtra("eventDateTime", eventDateTime); // ex: "April 15, 2023 | 8:00 PM"
-                intent.putExtra("eventVenue", eventVenue); // ex: "Grand Arena, Paris"
-                intent.putExtra("ticketPrice", ticketPrice); // ex: 199.99
-            }
-
-            startActivity(intent);
+        shareButton.setOnClickListener(v -> {
+            String shareText = eventTitleText.getText() + "\n" + eventDateText.getText() + "\n" + eventLocationText.getText();
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+            startActivity(Intent.createChooser(shareIntent, "Partager via"));
         });
 
-        // Gestionnaire d'événements pour le clic sur le lieu
         eventLocationText.setOnClickListener(v -> {
-            // Récupérer les informations du lieu depuis l'événement
             String locationName = eventLocationText.getText().toString();
 
-            // Coordonnées de l'événement (à remplacer par les coordonnées réelles de votre événement)
             String latitude = "48.8566";
             String longitude = "2.3522";
 
-            // Créer l'URI pour Google Maps
             Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + Uri.encode(locationName));
 
-            // Créer l'intent pour ouvrir Google Maps
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
 
-            // Vérifier si Google Maps est installé
             if (mapIntent.resolveActivity(getPackageManager()) != null) {
                 startActivity(mapIntent);
             } else {
-                // Si Google Maps n'est pas installé, ouvrir dans le navigateur
                 Uri browserUri = Uri.parse("https://www.google.com/maps/search/?api=1&query="
                         + Uri.encode(locationName));
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, browserUri);
@@ -279,121 +370,6 @@ public class EventDetailActivity extends AppCompatActivity {
         return true;
     }
 
-    // Adapter for Schedule
-    static class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
-
-        private List<ScheduleItem> scheduleItems;
-
-        public ScheduleAdapter(List<ScheduleItem> scheduleItems) {
-            this.scheduleItems = scheduleItems;
-        }
-
-        @NonNull
-        @Override
-        public ScheduleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.item_schedule, parent, false
-            );
-            return new ScheduleViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
-            holder.bind(scheduleItems.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return scheduleItems.size();
-        }
-
-        static class ScheduleViewHolder extends RecyclerView.ViewHolder {
-            private TextView timeTextView;
-            private TextView descriptionTextView;
-            private TextView checkinTextView; // Nouveau TextView pour l'heure de check-in
-
-            public ScheduleViewHolder(@NonNull View itemView) {
-                super(itemView);
-                timeTextView = itemView.findViewById(R.id.scheduleTimeTextView);
-                descriptionTextView = itemView.findViewById(R.id.scheduleDescriptionTextView);
-                checkinTextView = itemView.findViewById(R.id.scheduleCheckinTextView);
-            }
-
-            void bind(ScheduleItem scheduleItem) {
-                timeTextView.setText(scheduleItem.getTime());
-                descriptionTextView.setText(scheduleItem.getDescription());
-
-                // Afficher l'heure de check-in (3 heures avant l'événement)
-                if (checkinTextView != null) {
-                    checkinTextView.setText("Check-in: " + scheduleItem.getCheckinTime());
-                }
-            }
-        }
-    }
-
-    // Modification de la classe ScheduleItem pour inclure l'heure de check-in
-    static class ScheduleItem {
-        private String time;
-        private String description;
-        private String checkinTime;
-
-        public ScheduleItem(String time, String description) {
-            this.time = time;
-            this.description = description;
-
-            // Calculer l'heure de check-in (3 heures avant l'heure de l'événement)
-            try {
-                // Supposons que le format de l'heure est "HH:MM AM/PM"
-                String[] parts = time.split(" ");
-                String[] timeParts = parts[0].split(":");
-                int hour = Integer.parseInt(timeParts[0]);
-                int minute = Integer.parseInt(timeParts[1]);
-                String amPm = parts[1];
-
-                // Convertir en format 24 heures pour le calcul
-                if (amPm.equals("PM") && hour < 12) {
-                    hour += 12;
-                } else if (amPm.equals("AM") && hour == 12) {
-                    hour = 0;
-                }
-
-                // Soustraire 3 heures
-                hour -= 3;
-                if (hour < 0) {
-                    hour += 24;
-                    amPm = amPm.equals("AM") ? "PM" : "AM";
-                }
-
-                // Convertir en format 12 heures pour l'affichage
-                if (hour > 12) {
-                    hour -= 12;
-                    amPm = "PM";
-                } else if (hour == 0) {
-                    hour = 12;
-                    amPm = "AM";
-                } else if (hour == 12) {
-                    amPm = "PM";
-                }
-
-                this.checkinTime = String.format("%d:%02d %s", hour, minute, amPm);
-            } catch (Exception e) {
-                this.checkinTime = "3 hours before event";
-            }
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getCheckinTime() {
-            return checkinTime;
-        }
-    }
-    // Adapter for Ticket Options
     static class TicketOptionsAdapter extends RecyclerView.Adapter<TicketOptionsAdapter.TicketOptionViewHolder> {
 
         private List<TicketOption> ticketOptions;
@@ -452,7 +428,6 @@ public class EventDetailActivity extends AppCompatActivity {
             }
         }
     }
-
 
     static class TicketOption {
         private String type;

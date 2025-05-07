@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="About"
+                    android:text="A Propos"
                     android:textColor="#333333"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Join us for an unforgettable night of rock music featuring the biggest bands of the year. This concert is part of the Summer Tour 2023 and promises to be an amazing experience with spectacular light shows, incredible sound, and the best rock music."
+                    android:text="Join us for an unforgettable night of rock music featuring the biggest bands of the year..."
                     android:textColor="#666666"
                     android:textSize="14sp" />
 
@@ -126,10 +126,38 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Schedule"
+                    android:text="Disponibilité"
                     android:textColor="#333333"
                     android:textSize="18sp"
                     android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/availabilityStatusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/light_gray"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="DISPONIBLE"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ticketsAvailableText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="85 billets disponibles"
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/scheduleRecyclerView"
@@ -145,20 +173,47 @@
                     android:layout_marginBottom="16dp"
                     android:background="#EEEEEE" />
 
-                <TextView
+                <!-- Section pour la carte du théâtre -->
+                <LinearLayout
+                    android:id="@+id/venueMapContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ticket Options"
-                    android:textColor="#333333"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ticketOptionsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:nestedScrollingEnabled="false" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="#EEEEEE" />
+
+                    <TextView
+                        android:id="@+id/venueMapTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Plan du Théâtre"
+                        android:textColor="#333333"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/venueMapImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="8dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/theatre_municipal_tunis_map"
+                        android:contentDescription="Plan du théâtre" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Légende: Vert = VIP, Bleu = Premium, Rouge = Standard"
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -180,25 +235,14 @@
             android:id="@+id/shareButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/button_outline"
-            android:drawableStart="@drawable/ic_share"
-            android:drawablePadding="8dp"
-            android:padding="12dp"
-            android:text="Share"
-            android:textColor="#FF5252" />
+            android:text="Partager" />
 
         <Button
             android:id="@+id/bookTicketsButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="@drawable/rounded_button"
-            android:padding="12dp"
-            android:text="Book Tickets"
-            android:textColor="#FFFFFF" />
+            android:text="Réserver" />
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

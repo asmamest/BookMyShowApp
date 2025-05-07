@@ -1,11 +1,11 @@
-package tn.enicarthage.backendandroid.controllers;
+/*package tn.enicarthage.backendandroid.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.enicarthage.backendandroid.dto.request.TicketDTO;
-import tn.enicarthage.backendandroid.services.TicketService;
+//import tn.enicarthage.backendandroid.services.TicketService;
 import tn.enicarthage.backendandroid.enums.TicketType;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/tickets")
 @RequiredArgsConstructor
 public class TicketController {
-    private final TicketService ticketService;
+    //private final TicketService ticketService;
 
     @GetMapping
     public ResponseEntity<List<TicketDTO>> getAllTickets() {
@@ -62,4 +62,4 @@ public class TicketController {
         }
         return ResponseEntity.notFound().build();
     }
-}
+}*/

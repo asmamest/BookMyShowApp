@@ -3,41 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="12dp"
-    android:background="?attr/selectableItemBackground">
+    android:paddingVertical="8dp">
 
-    <!-- Date -->
-    <TextView
-        android:id="@+id/dayTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="15"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#FF5252"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/monthTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="AVR"
-        android:textSize="12sp"
-        android:textColor="#666666"
-        app:layout_constraintStart_toStartOf="@id/dayTextView"
-        app:layout_constraintEnd_toEndOf="@id/dayTextView"
-        app:layout_constraintTop_toBottomOf="@id/dayTextView" />
-
-    <!-- Lieu -->
+    <!-- Date (jour et mois) -->
     <LinearLayout
+        android:id="@+id/dateContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/light_gray"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/dayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#333333" />
+
+        <TextView
+            android:id="@+id/monthTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mai"
+            android:textSize="12sp"
+            android:textColor="#666666" />
+    </LinearLayout>
+
+    <!-- Informations sur le lieu -->
+    <LinearLayout
+        android:id="@+id/venueContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toEndOf="@id/dayTextView"
-        app:layout_constraintEnd_toStartOf="@id/bookButton"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toEndOf="@id/dateContainer"
+        app:layout_constraintEnd_toStartOf="@id/viewButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -46,17 +54,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Théâtre National"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="#333333"
+            android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end" />
 
         <TextView
-            android:id="@+id/cityTextView"
+            android:id="@+id/cityCountryTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tunis, Tunisie"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="#666666"
             android:maxLines="1"
             android:ellipsize="end" />
@@ -65,33 +74,21 @@
             android:id="@+id/timeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="20:00"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:maxLines="1"
-            android:ellipsize="end" />
+            android:text="19:30"
+            android:textSize="12sp"
+            android:textColor="#666666" />
     </LinearLayout>
 
-    <!-- Bouton de réservation -->
+    <!-- Bouton "Voir" -->
     <Button
-        android:id="@+id/bookButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:id="@+id/viewButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="See Event"
+        android:text="Voir"
         android:textAllCaps="false"
         android:textSize="12sp"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="8dp"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#EEEEEE"
-        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,6 +21,6 @@ public class Transaction {
 
     private LocalDateTime paidAt;
 
-    @OneToOne(mappedBy = "transaction")
-    private Ticket ticket;
+    /*@OneToOne(mappedBy = "transaction")
+    private Ticket ticket;*/
 }

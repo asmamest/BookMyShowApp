@@ -9,4 +9,6 @@
     <string name="success_icon">Success icon</string>
     <string name="onboarding_image_description">Onboarding screen image</string>
     <string name="feature_icon_description">Feature icon</string>
+    <string name="decrease_quantity">Decrease quantity</string>
+
 </resources>

@@ -17,6 +17,7 @@ public class TourDate {
         this.city = city;
         this.country = country;
         this.time = time;
+
     }
 
     public String getDay() {

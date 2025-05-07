@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_back"
-            app:title="Payment"
+            app:title="Paiement"
             app:titleTextColor="#333333" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -31,6 +31,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Détails de l'événement -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +48,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Order Summary"
+                        android:text="Détails de l'événement"
                         android:textColor="#333333"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -62,15 +63,16 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Rock Concert: Summer Tour 2023"
-                            android:textColor="#333333"
+                            android:text="Événement"
+                            android:textColor="#666666"
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/eventTitleTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="VIP Ticket"
-                            android:textColor="#666666"
+                            android:text="Titre de l'événement"
+                            android:textColor="#333333"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -89,9 +91,10 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/eventDateTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="April 15, 2023 | 8:00 PM"
+                            android:text="Date de l'événement"
                             android:textColor="#333333"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -106,87 +109,101 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Venue"
+                            android:text="Lieu"
                             android:textColor="#666666"
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/eventVenueTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Grand Arena, Paris"
+                            android:text="Lieu de l'événement"
                             android:textColor="#333333"
                             android:textSize="14sp" />
                     </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                    <View
+            <!-- Section pour les quantités de billets -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Sélection des billets"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/ticketQuantitiesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Message d'erreur pour la disponibilité des billets -->
+            <TextView
+                android:id="@+id/errorMessageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre de tickets insuffisant"
+                android:textColor="#FF0000"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone" />
+
+            <!-- Section option étudiant -->
+            <CheckBox
+                android:id="@+id/studentDiscountCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tarif étudiant (-10%)"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/studentDiscountMessageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Carte étudiante obligatoire à présenter à l'entrée"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone" />
+
+            <!-- Section pour le récapitulatif des prix -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="#EEEEEE" />
+                        android:layout_height="wrap_content"
+                        android:text="Récapitulatif"
+                        android:textColor="#333333"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Quantity"
-                            android:textColor="#333333"
-                            android:textSize="14sp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/quantity_background"
-                            android:orientation="horizontal">
-
-                            <ImageButton
-                                android:id="@+id/decreaseQuantityButton"
-                                android:layout_width="34dp"
-                                android:layout_height="34dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                 />
-
-                            <TextView
-                                android:id="@+id/quantityTextView"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:gravity="center"
-                                android:text="1"
-                                android:textColor="#333333"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <ImageButton
-                                android:id="@+id/increaseQuantityButton"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                 />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="#EEEEEE" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Subtotal"
+                            android:text="Sous-total"
                             android:textColor="#666666"
                             android:textSize="14sp" />
 
@@ -194,7 +211,7 @@
                             android:id="@+id/subtotalTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$199.99"
+                            android:text="$0.00"
                             android:textColor="#333333"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -209,7 +226,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Service Fee"
+                            android:text="Frais de service"
                             android:textColor="#666666"
                             android:textSize="14sp" />
 
@@ -217,8 +234,34 @@
                             android:id="@+id/serviceFeeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$19.99"
+                            android:text="$0.00"
                             android:textColor="#333333"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Remise étudiant (conditionnelle) -->
+                    <LinearLayout
+                        android:id="@+id/studentDiscountLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Remise étudiant (10%)"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/discountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-$0.00"
+                            android:textColor="#4CAF50"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -241,19 +284,33 @@
                             android:id="@+id/totalTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$219.98"
+                            android:text="$0.00"
                             android:textColor="#FF5252"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            <!-- Ajouter ce bloc avant la section des détails de la carte de crédit -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="Email (obligatoire)">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- Section pour les méthodes de paiement -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Payment Method"
+                android:text="Méthode de paiement"
                 android:textColor="#333333"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -265,6 +322,7 @@
                 android:layout_marginBottom="16dp">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/creditCardContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -277,12 +335,15 @@
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:padding="16dp"
-                        android:text="Credit/Debit Card"
+                        android:text="Carte de crédit/débit"
                         android:textColor="#333333"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="false"
+                        android:focusable="false" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/paypalContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -296,10 +357,13 @@
                         android:padding="16dp"
                         android:text="PayPal"
                         android:textColor="#333333"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="false"
+                        android:focusable="false" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/googlePayContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="8dp"
@@ -312,15 +376,18 @@
                         android:padding="16dp"
                         android:text="Google Pay"
                         android:textColor="#333333"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="false"
+                        android:focusable="false" />
                 </androidx.cardview.widget.CardView>
             </RadioGroup>
 
+            <!-- Section pour les détails de la carte de crédit -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/creditCardDetailsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="200dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="2dp">
 
@@ -334,7 +401,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:text="Card Details"
+                        android:text="Détails de la carte"
                         android:textColor="#333333"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -343,14 +410,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:hint="Card Number"
+                        android:hint="Numéro de carte"
                         app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/cardNumberEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
+                            android:inputType="numberPassword"
                             android:maxLength="16" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -364,7 +431,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:hint="Expiry Date (MM/YY)">
+                            android:hint="Date d'expiration (MM/YY)">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/expiryDateEditText"
@@ -394,39 +461,47 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:hint="Cardholder Name">
+                        android:hint="Nom du titulaire">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/cardholderNameEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:layout_marginBottom="10dp"/>
+                            android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Espace supplémentaire pour éviter que le bouton fixe ne cache le contenu -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Bouton de paiement fixe en bas -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="#FFFFFF"
         android:elevation="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <Button
             android:id="@+id/payNowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:background="@drawable/rounded_button"
-            android:padding="16dp"
-            android:text="Pay Now "
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="Payer"
             android:textColor="#FFFFFF"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
             android:textSize="16sp" />
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

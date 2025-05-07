@@ -53,4 +53,7 @@ public class ApiClient {
         }
         return retrofit;
     }
+    public static ApiService getApiService() {
+        return getClient().create(ApiService.class); // Crée et retourne l'instance de ApiService
+    }
 }
