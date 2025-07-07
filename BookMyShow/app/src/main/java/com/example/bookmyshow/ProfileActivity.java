@@ -32,7 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView tvUsername;
     private TextView tvEmail;
     private TextView tvMemberSince;
-    private SwitchMaterial switchDarkMode;
+    //private SwitchMaterial switchDarkMode;
     private CardView cardEditProfile;
     private CardView cardPaymentMethods;
     private CardView cardTicketHistory;
@@ -55,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         initViews();
         setupImagePicker();
         loadUserData();
-        setupDarkModeSwitch();
+        // setupDarkModeSwitch();
         setupCardClickListeners();
         setupEditProfileButton();
     }
@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvUsername = findViewById(R.id.tvUsername);
         tvEmail = findViewById(R.id.tvEmail);
         tvMemberSince = findViewById(R.id.tvMemberSince);
-        switchDarkMode = findViewById(R.id.switchDarkMode);
+        //switchDarkMode = findViewById(R.id.switchDarkMode);
         cardEditProfile = findViewById(R.id.cardEditProfile);
         cardPaymentMethods = findViewById(R.id.cardPaymentMethods);
         cardTicketHistory = findViewById(R.id.cardTicketHistory);
@@ -143,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void setupDarkModeSwitch() {
+    /*private void setupDarkModeSwitch() {
         boolean isDarkMode = (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
         switchDarkMode.setChecked(isDarkMode);
 
@@ -151,7 +151,7 @@ public class ProfileActivity extends AppCompatActivity {
             ThemeManager.setTheme(isChecked);
             prefs.edit().putBoolean("darkMode", isChecked).apply();
         });
-    }
+    }*/
 
     private void setupCardClickListeners() {
 

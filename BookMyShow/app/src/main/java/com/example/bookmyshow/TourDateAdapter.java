@@ -74,7 +74,7 @@ public class TourDateAdapter extends RecyclerView.Adapter<TourDateAdapter.TourDa
 
             // Configurer le bouton "Voir" pour naviguer vers EventDetailActivity
             viewButton.setOnClickListener(v -> {
-                Intent intent = new Intent(context, EventDetailActivity.class);
+                Intent intent = new Intent(context, DetailsActivity.class);
 
                 // Passer l'ID de l'événement et l'index de la date
                 intent.putExtra("eventId", parentShow.getId());

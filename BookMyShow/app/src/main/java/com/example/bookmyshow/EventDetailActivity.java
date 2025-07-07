@@ -42,9 +42,9 @@ public class EventDetailActivity extends AppCompatActivity {
     private String eventLocation;
 
     // Prix des billets par catégorie
-    private static final double VIP_PRICE = 199.99;
-    private static final double PREMIUM_PRICE = 99.99;
-    private static final double STANDARD_PRICE = 49.99;
+    private static final double VIP_PRICE = 39.99;
+    private static final double PREMIUM_PRICE = 29.99;
+    private static final double STANDARD_PRICE = 19.99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

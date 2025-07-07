@@ -75,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_location"
                         android:drawablePadding="4dp"
-                        android:text="Paris"
+                        android:text="Tunis"
                         android:textColor="#333333"
                         android:textSize="14sp" />
 
@@ -90,7 +90,7 @@
                         android:id="@+id/radiusText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5 km"
+                        android:text="20 km"
                         android:textColor="#333333"
                         android:textSize="14sp" />
 

@@ -71,9 +71,9 @@ public class PaymentActivity extends AppCompatActivity {
     private TextInputEditText emailEditText;
 
     // Prix des billets
-    private double vipPrice = 199.99;
-    private double premiumPrice = 99.99;
-    private double standardPrice = 49.99;
+    private double vipPrice = 39.99;
+    private double premiumPrice = 29.99;
+    private double standardPrice = 19.99;
 
     // Quantités de billets
     private int vipQuantity = 0;
@@ -544,17 +544,17 @@ public class PaymentActivity extends AppCompatActivity {
         double discount = 0.0;
         if (isStudentDiscount) {
             discount = subtotal * STUDENT_DISCOUNT_PERCENTAGE;
-            discountTextView.setText(String.format("-$%.2f", discount));
+            discountTextView.setText(String.format("-Dt%.2f", discount));
         }
 
         double total = subtotal + serviceFee - discount;
 
-        subtotalTextView.setText(String.format("$%.2f", subtotal));
-        serviceFeeTextView.setText(String.format("$%.2f", serviceFee));
-        totalTextView.setText(String.format("$%.2f", total));
+        subtotalTextView.setText(String.format("%.2f", subtotal));
+        serviceFeeTextView.setText(String.format("Dt%.2f", serviceFee));
+        totalTextView.setText(String.format("Dt%.2f", total));
 
         // Update the pay button text with the total amount
-        payNowButton.setText(String.format("Payer $%.2f", total));
+        payNowButton.setText(String.format("Payer Dt%.2f", total));
     }
 
     /**
@@ -599,7 +599,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             // Configurer les vues
             typeTextView.setText(type);
-            priceTextView.setText(String.format("$%.2f", price));
+            priceTextView.setText(String.format("Dt%.2f", price));
             quantityTextView.setText(String.valueOf(quantity));
 
             // Update availability text

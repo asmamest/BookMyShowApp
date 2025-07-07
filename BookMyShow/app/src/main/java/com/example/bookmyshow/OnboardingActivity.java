@@ -71,7 +71,7 @@ public class OnboardingActivity extends AppCompatActivity {
                     btnGetStarted.setVisibility(View.VISIBLE);
                     tvSkip.setVisibility(View.VISIBLE);
                 } else {
-                    btnGetStarted.setVisibility(View.GONE);
+                    btnGetStarted.setVisibility(View.VISIBLE);
                     tvSkip.setVisibility(View.VISIBLE);
                 }
             }
